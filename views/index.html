@@ -1,0 +1,30 @@
+<html><head>
+		<title>Book Gallery</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="style.css">
+		<script type="text/javascript" src="../modal.js"></script>
+	</head>
+	<body>
+		<!-- Gallery -->
+		<div class="gallery"><img class="cover-img" src="./public/images/1 The Power of Habit.jpg" onclick="openModal(1)"><img class="cover-img" src="./public/images/2 All My Rage.jpg" onclick="openModal(2)"><img class="cover-img" src="./public/images/3 Smoke Gets in Your Eyes.jpg" onclick="openModal(3)"><img class="cover-img" src="./public/images/4 From Here to Eternity.jpg" onclick="openModal(4)"><img class="cover-img" src="./public/images/5 Sideways.jpg" onclick="openModal(5)"><img class="cover-img" src="./public/images/6 Invisible Women.jpg" onclick="openModal(6)"><img class="cover-img" src="./public/images/7 This Time Tomorrow.jpg" onclick="openModal(7)"><img class="cover-img" src="./public/images/8 Lady Killers.jpg" onclick="openModal(8)"><img class="cover-img" src="./public/images/9 Lessons in Chemistry.jpg" onclick="openModal(9)"><img class="cover-img" src="./public/images/10 Why Flying is Miserable.jpg" onclick="openModal(10)"><img class="cover-img" src="./public/images/11 Inflamed.jpg" onclick="openModal(11)"><img class="cover-img" src="./public/images/12 Murder on the Orient Express.jpg" onclick="openModal(12)"><img class="cover-img" src="./public/images/13 The Mysterious Affair at Styles.jpg" onclick="openModal(13)"><img class="cover-img" src="./public/images/14 The Murder on the Links.jpg" onclick="openModal(14)"><img class="cover-img" src="./public/images/15 The Lonely Hearts Book Club.jpg" onclick="openModal(15)"><img class="cover-img" src="./public/images/16 And Then There Were None.jpg" onclick="openModal(16)"><img class="cover-img" src="./public/images/17 I'll Be Gone in the Dark.jpg" onclick="openModal(17)"><img class="cover-img" src="./public/images/18 The Murder of Roger Ackroyd.jpg" onclick="openModal(18)"><img class="cover-img" src="./public/images/19 Magpie Murders.jpg" onclick="openModal(19)"><img class="cover-img" src="./public/images/20 The Big Four.jpg" onclick="openModal(20)"><img class="cover-img" src="./public/images/21 Unscripted.jpg" onclick="openModal(21)"><img class="cover-img" src="./public/images/22 The Mystery of the Blue Train.jpg" onclick="openModal(22)"><img class="cover-img" src="./public/images/23 Found in a Bookshop.jpg" onclick="openModal(23)"><img class="cover-img" src="./public/images/24 Battle of Ink and Ice.jpg" onclick="openModal(24)"></div>
+		
+		<!-- Book Modal -->
+		<div id="bookModal" class="modal">
+			<div class="modal-content">
+				<span class="close">×</span>
+				<div class="row">
+					<div class="col-md-5 text-center"><img id="modal-img" src="./public/images/1 The Power of Habit.jpg"></div>
+					<div class="col-md-7">
+						<b><h2 id="modal-title"></h2></b>
+						<i><h3 id="modal-author"></h3></i>
+						<br>
+						<p id="modal-description"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+</body></html>
