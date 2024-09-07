@@ -22,12 +22,17 @@ var storage = multer.diskStorage({
 		cb(null, './public/images/')
 	},
 	filename: function (req, file, cb) {
-		var imageName = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
-		cb(null, imageName + ".jpg") //Appending extension
+		cb(null, setImageFileName(req))
 	}
 })
   
 var upload = multer({ storage: storage });
+
+function setImageFileName(req) {
+    var title = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
+    var fileName = req.body.id + " " + title + ".jpg";
+    return fileName;
+}
 
 function setBooks() {
 	var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
@@ -44,6 +49,7 @@ function setBooks() {
 		var $ = cheerio.load(data);
 
 		$('.gallery').html('');
+        $('#id').val(parseInt(books[books.length-1].id) + 1);
 
 		for (const book of books) {
 			$('.gallery').append('\n\t\t\t<img class="cover-img" src="./public/images/'+book.imageurl+'" onclick="openModal('+book.id+')">');
@@ -96,7 +102,6 @@ app.get('/book', function(req, res) {
 
 app.post('/addBook', upload.single('cover'), function(req, res) {
 	console.log('receiving data ...');
-	var imageName = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
 
 	let nameFileExcel = __dirname + '/book data.xlsx';
 	var workbook = new exceljs.Workbook();
@@ -109,10 +114,11 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		getRowInsert.getCell('B').value = req.body.title;
 		getRowInsert.getCell('C').value = req.body.author;
 		getRowInsert.getCell('D').value = req.body.description;
-		getRowInsert.getCell('E').value = imageName + ".jpg";
+		getRowInsert.getCell('E').value = setImageFileName(req);
 		getRowInsert.commit();
 		return workbook.xlsx.writeFile(nameFileExcel);
 	});
 
+    console.log('added data');
 	res.redirect('/');
 });

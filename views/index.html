@@ -14,12 +14,13 @@
             <button class="btn btn-primary btn-lg" onclick="openForm()">Add New Book</button>
         </div>
 
-        <!-- Book Modal -->
+        <!-- Add Book Modal -->
 		<div id="formModal" class="modal">
 			<div class="modal-content">
 				<span class="close">×</span>
                 <h1>Add New Book</h1>
 				<form id="addBookForm" method="post" action="/addBook" enctype="multipart/form-data">
+                    <input id="id" name="id" hidden="" value="28"> 
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input id="title" name="title" class="form-control" type="text" required="">
@@ -69,6 +70,7 @@
 			<img class="cover-img" src="./public/images/24 Battle of Ink and Ice.jpg" onclick="openModal(24)">
 			<img class="cover-img" src="./public/images/25 Peril at End House.jpg" onclick="openModal(25)">
 			<img class="cover-img" src="./public/images/26 Denison Avenue.jpg" onclick="openModal(26)">
+			<img class="cover-img" src="./public/images/27 Blind Eye.jpg" onclick="openModal(27)">
 		</div>
         
 		<!-- Book Modal -->
