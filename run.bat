@@ -1,1 +1,1 @@
-node index.js
+node server/index.js & npm start client

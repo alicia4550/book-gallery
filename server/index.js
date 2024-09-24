@@ -1,7 +1,6 @@
 const http = require('http');
 const fs = require('fs');
 const express = require("express");
-const cheerio = require('cheerio');
 const xlsx = require('node-xlsx');
 const bodyParser = require('body-parser');
 const exceljs = require('exceljs');
@@ -41,30 +40,8 @@ function setImageFileName(req) {
     return fileName;
 }
 
-function setBooks() {
-	fs.readFile('views/index.html', 'utf8', function(err, data) {
-		if (err) throw err;
-
-		var $ = cheerio.load(data);
-
-		$('.gallery').html('');
-        $('#id').val(parseInt(books[books.length-1].id) + 1);
-
-		for (const book of books) {
-			$('.gallery').append('\n\t\t\t<img class="cover-img" src="./public/images/'+book.imageurl+'" onclick="openModal('+book.id+')">');
-		}
-		$('.gallery').append("\n\t\t");
-
-		fs.writeFile("views/index.html", $.html(), function(err) {
-			if(err) {
-				throw err;
-			}
-		});
-	});
-}
-
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -79,12 +56,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.get('/', (req, res)=>{
-	setBooks();
-	res.status(200);
-	res.render('index.html', {books});
-});
-
 app.listen(PORT, (error) =>{
 	if(!error) {
 		console.log("Server is Successfully Running, and App is listening on port "+ PORT);
@@ -92,11 +63,6 @@ app.listen(PORT, (error) =>{
 	else {
 		console.log("Error occurred, server can't start", error);
 	}
-});
-
-app.get('/book', function(req, res) {
-	const id = req.query.id;
-	res.send(books[Number(id)-1]);
 });
 
 app.post('/addBook', upload.single('cover'), function(req, res) {
@@ -124,3 +90,15 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
     console.log('added data');
     res.redirect('/');
 });
+
+app.get('/getBooks', function(req, res) {
+    var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
+    bookdata.shift();
+
+    var books = [];
+    for (const book of bookdata) {
+        books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5]));
+    }
+
+    res.json({ message: books });
+})
