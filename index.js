@@ -7,15 +7,22 @@ const bodyParser = require('body-parser');
 const exceljs = require('exceljs');
 var multer = require('multer');
 
-function Book(id, title, author, description, imageurl) {
+function Book(id, title, author, description, imageurl, date) {
 	this.id = id;
 	this.title = title;
 	this.author = author;
 	this.description = description;
 	this.imageurl = imageurl;
+    this.date = date;
 }
 
+var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
+bookdata.shift();
+
 var books = [];
+for (const book of bookdata) {
+	books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5]));
+}
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -35,14 +42,6 @@ function setImageFileName(req) {
 }
 
 function setBooks() {
-	var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
-	bookdata.shift();
-
-	books = [];
-	for (const book of bookdata) {
-		books.push(new Book(book[0], book[1], book[2], book[3], book[4]));
-	}
-
 	fs.readFile('views/index.html', 'utf8', function(err, data) {
 		if (err) throw err;
 
@@ -110,7 +109,7 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		var worksheet = workbook.getWorksheet(1);
 		var lastRow = worksheet.lastRow;
 		var getRowInsert = worksheet.getRow(++(lastRow.number));
-		getRowInsert.getCell('A').value = lastRow.number;
+		getRowInsert.getCell('A').value = req.body.id;
 		getRowInsert.getCell('B').value = req.body.title;
 		getRowInsert.getCell('C').value = req.body.author;
 		getRowInsert.getCell('D').value = req.body.description;
@@ -119,6 +118,9 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		return workbook.xlsx.writeFile(nameFileExcel);
 	});
 
+    var today = new Date().toLocaleDateString('en-CA');
+    books.push(new Book(req.body.id, req.body.title, req.body.author, req.body.description, setImageFileName(req), today));
+	
     console.log('added data');
-	res.redirect('/');
+    res.redirect('/');
 });
