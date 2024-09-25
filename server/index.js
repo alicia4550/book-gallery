@@ -12,7 +12,7 @@ function Book(id, title, author, description, imageurl, date) {
 	this.author = author;
 	this.description = description;
 	this.imageurl = imageurl;
-    this.date = date;
+	this.date = date;
 }
 
 var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
@@ -35,9 +35,9 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 function setImageFileName(req) {
-    var title = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
-    var fileName = req.body.id + " " + title + ".jpg";
-    return fileName;
+	var title = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
+	var fileName = req.body.id + " " + title + ".jpg";
+	return fileName;
 }
 
 const app = express();
@@ -84,21 +84,21 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		return workbook.xlsx.writeFile(nameFileExcel);
 	});
 
-    var today = new Date().toLocaleDateString('en-CA');
-    books.push(new Book(req.body.id, req.body.title, req.body.author, req.body.description, setImageFileName(req), today));
+	var today = new Date().toLocaleDateString('en-CA');
+	books.push(new Book(req.body.id, req.body.title, req.body.author, req.body.description, setImageFileName(req), today));
 	
-    console.log('added data');
-    res.redirect('/');
+	console.log('added data');
+	res.redirect('/');
 });
 
 app.get('/getBooks', function(req, res) {
-    var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
-    bookdata.shift();
+	var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
+	bookdata.shift();
 
-    var books = [];
-    for (const book of bookdata) {
-        books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5]));
-    }
+	var books = [];
+	for (const book of bookdata) {
+		books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5]));
+	}
 
-    res.json({ message: books });
+	res.json({ message: books });
 })
