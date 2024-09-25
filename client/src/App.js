@@ -69,15 +69,17 @@ function App() {
 	React.useEffect(() => {
 		function changeBook(event) {
 			if (!showBookModal) return;
+
+			let i = filteredBooks.findIndex(filteredBook => filteredBook.id === currentBook.id);
 	
-			let book = filteredBooks[currentBook.id - 1];
+			let book = filteredBooks[i];
 			if (event.key === 'ArrowLeft') {
 				// left arrow
-				book = filteredBooks[currentBook.id > 2 ? currentBook.id - 2 : 0];
+				book = filteredBooks[i > 1 ? i - 1 : 0];
 			}
 			else if (event.key === 'ArrowRight') {
 				// right arrow
-				book = filteredBooks[currentBook.id < filteredBooks.length ? currentBook.id : filteredBooks.length - 1];
+				book = filteredBooks[i < filteredBooks.length - 1 ? i + 1 : filteredBooks.length - 1];
 			}
 			
 			setCurrentBook({
