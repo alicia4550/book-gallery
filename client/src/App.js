@@ -7,6 +7,7 @@ import FormModal from "./components/FormModal";
 
 function App() {
 	const [books, setBooks] = React.useState(null);
+	const [filteredBooks, setFilteredBooks] = React.useState(null);
 	const [showBookModal, setShowBookModal] = React.useState(false);
 	const [showFormModal, setShowFormModal] = React.useState(false);
 	const [currentBook, setCurrentBook] = React.useState({
@@ -41,11 +42,19 @@ function App() {
 		setShowFormModal(false);
 	}
 
+	function filterBooks(e) {
+		let search = e.target.value.toLowerCase();
+
+		const filtered = books.filter(book => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search));
+		setFilteredBooks(filtered);
+	}
+
 	React.useEffect(() => {
 		fetch("/getBooks")
 		.then((res) => res.json())
 		.then((data) => {
 			setBooks(data.message);
+			setFilteredBooks(data.message);
 			let book = data.message[0];
 			setCurrentBook({
 				id : book.id,
@@ -61,14 +70,14 @@ function App() {
 		function changeBook(event) {
 			if (!showBookModal) return;
 	
-			let book = books[currentBook.id - 1];
+			let book = filteredBooks[currentBook.id - 1];
 			if (event.key === 'ArrowLeft') {
 				// left arrow
-				book = books[currentBook.id > 2 ? currentBook.id - 2 : 0];
+				book = filteredBooks[currentBook.id > 2 ? currentBook.id - 2 : 0];
 			}
 			else if (event.key === 'ArrowRight') {
 				// right arrow
-				book = books[currentBook.id < books.length ? currentBook.id : books.length - 1];
+				book = filteredBooks[currentBook.id < filteredBooks.length ? currentBook.id : filteredBooks.length - 1];
 			}
 			
 			setCurrentBook({
@@ -85,7 +94,7 @@ function App() {
 		return function cleanup() {
 			document.removeEventListener('keydown', changeBook);
 		}
-	}, [showBookModal, currentBook, books]);
+	}, [showBookModal, currentBook, filteredBooks]);
 
 	return (
 		<div className="App">
@@ -101,9 +110,11 @@ function App() {
 				closeModal={closeFormModal}
 			/> 
 
+			<input id="searchBar" className="form-control" placeholder="Search..." onInput={(e)=>filterBooks(e)}/>
+
 			{/* Gallery */}
 			<div className="gallery">
-				{!books ? "Loading..." : books.map((book, index) => {
+				{!filteredBooks ? <p>"Loading..."</p> : filteredBooks.map((book, index) => {
 						return (
 							<Book
 								key={book.id}
