@@ -18,7 +18,7 @@ function App() {
 		imageUrl : "1 The Power of Habit.jpg",
 		date : "2024-01-01"
 	});
-	const [sortOrder, setSortOrder] = React.useState("1");
+	const [sortOrder, setSortOrder] = React.useState("2");
 
 	function openModal(id) {
 		let book = books[id - 1];
@@ -175,7 +175,7 @@ function App() {
 				<div className="col-md-3">		
 					<select className="form-control" id="sort" name="sort" onInput={(e)=>sortBooks(e.target.value)}>
 						<option value={1}>Date Read (Oldest to Newest)</option>
-						<option value={2}>Date Read (Newest to Oldest)</option>
+						<option value={2} selected={true}>Date Read (Newest to Oldest)</option>
 						<option value={3}>Author, First Name (A - Z)</option>
 						<option value={4}>Author, First Name (Z - A)</option>
 						<option value={5}>Author, Last Name (A - Z)</option>

@@ -68,6 +68,8 @@ app.listen(PORT, (error) =>{
 app.post('/addBook', upload.single('cover'), function(req, res) {
 	console.log('receiving data ...');
 
+	let today = new Date();
+
 	let nameFileExcel = __dirname + '/book data.xlsx';
 	var workbook = new exceljs.Workbook();
 	workbook.xlsx.readFile(nameFileExcel)
@@ -75,16 +77,16 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		var worksheet = workbook.getWorksheet(1);
 		var lastRow = worksheet.lastRow;
 		var getRowInsert = worksheet.getRow(++(lastRow.number));
-		getRowInsert.getCell('A').value = req.body.id;
+		getRowInsert.getCell('A').value = Number(req.body.id);
 		getRowInsert.getCell('B').value = req.body.title;
 		getRowInsert.getCell('C').value = req.body.author;
 		getRowInsert.getCell('D').value = req.body.description;
 		getRowInsert.getCell('E').value = setImageFileName(req);
+		getRowInsert.getCell('F').value = today;
 		getRowInsert.commit();
 		return workbook.xlsx.writeFile(nameFileExcel);
 	});
 
-	var today = new Date().toLocaleDateString('en-CA');
 	books.push(new Book(req.body.id, req.body.title, req.body.author, req.body.description, setImageFileName(req), today));
 	
 	console.log('added data');
