@@ -1,3 +1,8 @@
+.App {
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body {
 	background-color: #faf0e6;
 	padding: 100px;
@@ -83,4 +88,21 @@ button {
 
 .accordion-button {
     font-size: 2rem;
+}
+
+.mrgn-15 {
+    margin: 15px 0px;
+}
+
+.mrgn-btm-15 {
+    margin-bottom: 15px;
+}
+
+td {
+    padding: 15px!important;
+}
+
+#descriptionText {
+    position: absolute;
+    left: -9999px;
 }

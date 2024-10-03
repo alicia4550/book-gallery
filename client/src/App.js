@@ -181,16 +181,16 @@ function App() {
 			{/* Gallery */}
 			<div className="gallery">
 				{!filteredBooks ? <p>"Loading..."</p> : filteredBooks.map((book, index) => {
-						return (
-							<Book
-								key={book.id}
-								id={book.id}
-								title={book.title}
-								imageUrl={book.imageurl}
-								handleClick={openModal}
-							/>
-						)
-					})}
+					return (
+						<Book
+							key={book.id}
+							id={book.id}
+							title={book.title}
+							imageUrl={book.imageurl}
+							handleClick={openModal}
+						/>
+					)
+				})}
 			</div>	
 
 			{/* Book Modal */}

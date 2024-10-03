@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const request = require('request');
 const express = require("express");
 const xlsx = require('node-xlsx');
 const bodyParser = require('body-parser');
@@ -34,6 +35,15 @@ var storage = multer.diskStorage({
   
 var upload = multer({ storage: storage });
 
+var download = function(uri, filename, callback){
+	request.head(uri, function(err, res, body){
+		console.log('content-type:', res.headers['content-type']);
+		console.log('content-length:', res.headers['content-length']);
+
+		request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+	});
+};
+
 function setImageFileName(req) {
 	var title = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
 	var fileName = req.body.id + " " + title + ".jpg";
@@ -67,6 +77,12 @@ app.listen(PORT, (error) =>{
 
 app.post('/addBook', upload.single('cover'), function(req, res) {
 	console.log('receiving data ...');
+
+	if (req.body.coverUrl != '') {
+		download(req.body.coverUrl, './server/public/images/' + setImageFileName(req), function(){
+			console.log('saved image');
+		});
+	}
 
 	let today = new Date();
 
