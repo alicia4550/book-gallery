@@ -16,43 +16,25 @@ body {
 	width: 200px;
 }
 
-
-/* The Modal (background) */
-.modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 2; /* Sit on top */
-	left: 0;
-	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgb(0,0,0); /* Fallback color */
-	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+.modal80 {
+    max-width: none !important;
+    width: 80%;
 }
 
-/* Modal Content/Box */
-.modal-content {
-	background-color: #fefefe;
-	margin: 5% auto; /* 15% from the top and centered */
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%; /* Could be more or less, depending on screen size */
+.modal h1 {
+    font-size: 3.5rem;
 }
 
-/* The Close Button */
-.close {
-	color: #aaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
+.modal h2 {
+    font-size: 2.5rem;
 }
 
-.close:hover,
-.close:focus {
-	color: black;
-	text-decoration: none;
-	cursor: pointer;
+.modal p {
+    font-size: 1.5rem;
+}
+
+#bookDetails {
+    padding-right: 50px;
 }
 
 #modal-img {
@@ -83,4 +65,22 @@ select{
 	margin-top: 25px;
 	margin-bottom: 25px;
 	font-size: large;
+}
+
+.form-label {
+    font-size: large;
+}
+
+button {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.accordion-header {
+    margin-top: 0px;
+}
+
+.accordion-button {
+    font-size: 2rem;
 }

@@ -15,7 +15,7 @@ function Book(id, title, author, description, imageurl, date) {
 	this.date = date;
 }
 
-var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
+var bookdata = xlsx.parse(__dirname + '/bookdata.xlsx')[0].data;
 bookdata.shift();
 
 var books = [];
@@ -70,7 +70,7 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 
 	let today = new Date();
 
-	let nameFileExcel = __dirname + '/book data.xlsx';
+	let nameFileExcel = __dirname + '/bookdata.xlsx';
 	var workbook = new exceljs.Workbook();
 	workbook.xlsx.readFile(nameFileExcel)
 	.then(function()  {
@@ -94,7 +94,7 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 });
 
 app.get('/getBooks', function(req, res) {
-	var bookdata = xlsx.parse(__dirname + '/book data.xlsx')[0].data;
+	var bookdata = xlsx.parse(__dirname + '/bookdata.xlsx')[0].data;
 	bookdata.shift();
 
 	var books = [];

@@ -1,15 +1,16 @@
 import React from "react";
 import './App.css';
 
+import {Form} from "react-bootstrap";
+
 import Book from "./components/Book";
 import BookModal from "./components/BookModal";
-import FormModal from "./components/FormModal";
+import NewBookForm from "./components/NewBookForm";
 
 function App() {
 	const [books, setBooks] = React.useState(null);
 	const [filteredBooks, setFilteredBooks] = React.useState(null);
 	const [showBookModal, setShowBookModal] = React.useState(false);
-	const [showFormModal, setShowFormModal] = React.useState(false);
 	const [currentBook, setCurrentBook] = React.useState({
 		id : 1,
 		title : "The Power of Habit: Why We Do What We Do in Life and Business",
@@ -35,14 +36,6 @@ function App() {
 
 	function closeBookModal() {
 		setShowBookModal(false);
-	}
-
-		function openFormModal() {
-		setShowFormModal(true);
-	}
-
-	function closeFormModal() {
-		setShowFormModal(false);
 	}
 
 	function filterBooks(e) {
@@ -94,6 +87,11 @@ function App() {
 			case "8":
 				setFilteredBooks(prevFilteredBooks => {
 					return prevFilteredBooks.toSorted((a, b) => b.title.localeCompare(a.title))
+				});
+				break;
+			default:
+				setFilteredBooks(prevFilteredBooks => {
+					return prevFilteredBooks.toSorted((a, b) => a.id < b.id ? 1 : -1)
 				});
 				break;
 		}
@@ -153,36 +151,30 @@ function App() {
 
 	return (
 		<div className="App">
-			<div className="text-center">
-				<button className="btn btn-primary btn-lg" onClick={()=>openFormModal()}>Add New Book</button>
-			</div>
-
-			{/* Add Book Modal */}
-			<FormModal
-				showModal={showFormModal}
-				id={!books ? 0 : books.length}
-				openModal={openFormModal}
-				closeModal={closeFormModal}
-			/> 
+			<NewBookForm id={!books ? 1 : books.length + 1}/>
 
 			<div className="row" id="filterSort">
 				<div className="col-md-6">
-					<input id="searchBar" className="form-control" placeholder="Search..." onInput={(e)=>filterBooks(e)}/>
+					<Form.Control
+						size="lg" type="text" placeholder="Search..."
+						id="searchBar"
+						onInput={(e)=>filterBooks(e)}
+					/>
 				</div>
-				<div className="col-md-3">	
-					<label id="sortLabel" htmlFor="sort">Sort by: </label>
+				<div className="col-md-3">
+					<Form.Label id="sortLabel" htmlFor="sort">Sort by:</Form.Label>
 				</div>
-				<div className="col-md-3">		
-					<select className="form-control" id="sort" name="sort" onInput={(e)=>sortBooks(e.target.value)}>
+				<div className="col-md-3">
+					<Form.Select size="lg" id="sort" name="sort" defaultValue={2} onInput={(e)=>sortBooks(e.target.value)}>
 						<option value={1}>Date Read (Oldest to Newest)</option>
-						<option value={2} selected={true}>Date Read (Newest to Oldest)</option>
+						<option value={2}>Date Read (Newest to Oldest)</option>
 						<option value={3}>Author, First Name (A - Z)</option>
 						<option value={4}>Author, First Name (Z - A)</option>
 						<option value={5}>Author, Last Name (A - Z)</option>
 						<option value={6}>Author, Last Name (Z - A)</option>
 						<option value={7}>Title (A - Z)</option>
 						<option value={8}>Title (Z - A)</option>
-					</select>
+					</Form.Select>
 				</div>
 			</div>
 

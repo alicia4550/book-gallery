@@ -1,21 +1,15 @@
+import {Modal, Button} from "react-bootstrap";
+
 export default function BookModal(props) {
-	const style = {
-		display : props.showModal ? "block" : "none"
-	}
 	return (
-		<div id="bookModal" className="modal" style={style} onClick={(e) => {
-			if (e.target.className === 'modal') {
-				props.closeModal();
-			}
-		  }}>
-			<div id="modal-id" hidden=""></div>
-			<div className="modal-content">
-				<span className="close" onClick={()=>props.closeModal()}>×</span>
-				<div className="row">
+        <Modal show={props.showModal} onHide={props.closeModal} animation={false} centered dialogClassName="modal80">
+            <Modal.Header closeButton />
+			<Modal.Body>
+            <div className="row">
 					<div className="col-md-5 text-center"><img id="modal-img" src={"/public/images/" + props.imageUrl} alt={props.title}/></div>
-					<div className="col-md-7">
-						<b><h2 id="modal-title">{props.title}</h2></b>
-						<i><h3 id="modal-author">{props.author}</h3></i>
+					<div className="col-md-7" id="bookDetails">
+						<b><h1 id="modal-title">{props.title}</h1></b>
+						<i><h2 id="modal-author">{props.author}</h2></i>
 						<br/>
 						<div id="modal-description">
 							{props.description.split('\n').map((line, index) => (
@@ -26,7 +20,12 @@ export default function BookModal(props) {
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
+                </Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" size="lg" onClick={props.closeBookModal}>
+						Close
+					</Button>
+				</Modal.Footer>
+			</Modal>
 	)
 }
