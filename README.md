@@ -5,7 +5,14 @@
 ![Project Screenshot](demo1.png)
 *Project Screenshot*
 
-This project is a web-based collage of books I've read. A modal is displayed when a book is clicked on, providing more details about the book - a larger image of the cover, the title, the author(s), and a description.
+This project is a web-based collage of books I've read. 
+
+There are two different view modes, gallery view and list view. In gallery view, only the book covers are shown - more details are shown in a separate modal. In list view, book covers are shown along with additional details beside it.
+
+![List View](demo7.png)
+*List View*
+
+A modal is displayed when a book is clicked on, providing more details about the book - a larger image of the cover, the title, the author(s), and a description.
 
 ![Book Modal](demo2.png)
 *Book Modal*

@@ -5,7 +5,6 @@ export default function Book(props) {
 				className="cover-img" 
 				src={"public/images/" + props.imageUrl} 
 				alt={props.title} 
-				
 			/>
 		</button>
 	);

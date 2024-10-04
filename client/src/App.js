@@ -1,11 +1,15 @@
 import React from "react";
 import './App.css';
 
-import {Form} from "react-bootstrap";
+import {Form, Table} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTh, faList} from "@fortawesome/free-solid-svg-icons"
 
 import Book from "./components/Book";
 import BookModal from "./components/BookModal";
 import NewBookForm from "./components/NewBookForm";
+import BookListRow from "./components/BookListRow";
+import ViewButton from "./components/ViewButton";
 
 function App() {
 	const [books, setBooks] = React.useState(null);
@@ -20,6 +24,7 @@ function App() {
 		date : "2024-01-01"
 	});
 	const [sortOrder, setSortOrder] = React.useState("2");
+	const [view, setView] = React.useState(0);
 
 	function openModal(id) {
 		let book = books[id - 1];
@@ -161,7 +166,7 @@ function App() {
 						onInput={(e)=>filterBooks(e)}
 					/>
 				</div>
-				<div className="col-md-3">
+				<div className="col-md-2">
 					<Form.Label id="sortLabel" htmlFor="sort">Sort by:</Form.Label>
 				</div>
 				<div className="col-md-3">
@@ -176,9 +181,26 @@ function App() {
 						<option value={8}>Title (Z - A)</option>
 					</Form.Select>
 				</div>
+				<div className="col-md-1" id="views">
+					<ViewButton 
+						id={0}
+						view={view}
+						setView={setView}
+						icon={faTh}
+					/>
+					<ViewButton 
+						id={1}
+						view={view}
+						setView={setView}
+						icon={faList}
+					/>
+					{/* <button onClick={()=>setView(0)} style={{float: "left"}}><FontAwesomeIcon icon={faTh} /></button>
+					<button onClick={()=>setView(1)} style={{float: "right"}}><FontAwesomeIcon icon={faList} /></button> */}
+				</div>
 			</div>
 
 			{/* Gallery */}
+			{view === 0 ?
 			<div className="gallery">
 				{!filteredBooks ? <p>"Loading..."</p> : filteredBooks.map((book, index) => {
 					return (
@@ -191,7 +213,29 @@ function App() {
 						/>
 					)
 				})}
-			</div>	
+			</div> :
+			<div className="list">
+				{!filteredBooks ? <p>"Loading..."</p> : 
+				<Table>
+					<tbody>
+						{filteredBooks.map((book, index) => {
+							return (
+								<BookListRow
+									key={book.id}
+									id={book.id}
+									title={book.title}
+									author={book.author}
+									description={book.description}
+									imageUrl={book.imageurl}
+									handleClick={openModal}
+								/>
+							)
+						})}
+					</tbody>
+				</Table>
+				}
+				</div>
+			}
 
 			{/* Book Modal */}
 			<BookModal

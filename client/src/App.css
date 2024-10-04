@@ -106,3 +106,19 @@ td {
     position: absolute;
     left: -9999px;
 }
+
+.svg-inline--fa {
+    height: 2em;
+}
+
+#views {
+    vertical-align: middle;
+}
+
+#views button {
+    margin: 10px 0px;
+}
+
+td p {
+    font-size: medium;
+}
