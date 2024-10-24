@@ -41,13 +41,25 @@ export default function NewBookForm(props) {
 			document.getElementById("descriptionText").innerHTML = data.volumeInfo.description;
 			document.getElementById("description").value = document.getElementById("descriptionText").innerText;
 
-			document.getElementById("coverUrl").value = data.volumeInfo.imageLinks.large;
+			if (data.volumeInfo.hasOwnProperty("imageLinks")) {
+				let imageLink = getImageLink(data.volumeInfo.imageLinks);
+				document.getElementById("coverUrl").value = imageLink.replace("&edge=curl", "");
+			}
 
 			closeSearchedBooksModal();
 		})
 		.catch(error => {
 			console.error('Error:', error);
 		});
+	}
+
+	function getImageLink(imageLinks) {
+		if (imageLinks.hasOwnProperty("large")) return imageLinks.large;
+		else if (imageLinks.hasOwnProperty("medium")) return imageLinks.medium;
+		else if (imageLinks.hasOwnProperty("small")) return imageLinks.small;
+		else if (imageLinks.hasOwnProperty("thumbnail")) return imageLinks.thumbnail;
+		else if (imageLinks.hasOwnProperty("smallThumbnail")) return imageLinks.smallThumbnail;
+		else return "";
 	}
 
 	function closeSearchedBooksModal() {

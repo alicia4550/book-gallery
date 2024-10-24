@@ -2,7 +2,6 @@ import React from "react";
 import './App.css';
 
 import {Form, Table} from "react-bootstrap";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTh, faList} from "@fortawesome/free-solid-svg-icons"
 
 import Book from "./components/Book";

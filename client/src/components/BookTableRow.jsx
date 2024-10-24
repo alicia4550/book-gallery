@@ -9,7 +9,7 @@ export default function BookTableRow(props) {
 		<tr>
 			<td>
 				<button onClick={()=>props.getBook(props.id)}>
-					<img src={props.imgUrl} className="tableImg"/>
+					<img src={props.imgUrl} alt={props.title} className="tableImg"/>
 				</button>
 			</td>
 			<td>
