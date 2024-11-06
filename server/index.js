@@ -99,6 +99,8 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		getRowInsert.getCell('D').value = req.body.description;
 		getRowInsert.getCell('E').value = setImageFileName(req);
 		getRowInsert.getCell('F').value = today;
+        getRowInsert.getCell('G').value = req.body.type;
+        getRowInsert.getCell('H').value = req.body.genres.replaceAll("\r\n", " / ");
 		getRowInsert.commit();
 		return workbook.xlsx.writeFile(nameFileExcel);
 	});

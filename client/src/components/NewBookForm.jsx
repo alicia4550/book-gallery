@@ -41,6 +41,18 @@ export default function NewBookForm(props) {
 			document.getElementById("descriptionText").innerHTML = data.volumeInfo.description;
 			document.getElementById("description").value = document.getElementById("descriptionText").innerText;
 
+			let categories = data.volumeInfo.categories.join("<br>").replaceAll(" / ", "<br>").split("<br>");
+			categories = [...new Set(categories)];
+
+			if (categories.join().includes("Fiction")) {
+				document.getElementById("type-fiction").checked = true;
+			} else {
+				document.getElementById("type-nonfiction").checked = true;
+			}
+
+			document.getElementById("descriptionText").innerHTML = categories.join("<br>");
+			document.getElementById("genres").value = document.getElementById("descriptionText").innerText;
+
 			if (data.volumeInfo.hasOwnProperty("imageLinks")) {
 				let imageLink = getImageLink(data.volumeInfo.imageLinks);
 				document.getElementById("coverUrl").value = imageLink.replace("&edge=curl", "");
@@ -98,7 +110,19 @@ export default function NewBookForm(props) {
 						<Form.Group className="mrgn-15">
 							<Form.Label htmlFor="description">Description:</Form.Label>
 							<Form.Control size="lg" as="textarea" id="description" name="description" rows={10} required={true} />
-							<div id="descriptionText" tabIndex={"-1"}></div></Form.Group>
+							<div id="descriptionText" tabIndex={"-1"}></div>
+						</Form.Group>
+						<Form.Group className="mrgn-15">
+							<Form.Label htmlFor="type">Type:</Form.Label>
+							<div className="radio">
+								<Form.Check size="lg" type="radio" label="Fiction" value="Fiction" id="type-fiction" name="type" required={true} />
+								<Form.Check size="lg" type="radio" label="Nonfiction" value="Nonfiction" id="type-nonfiction" name="type" required={true} />
+							</div>
+						</Form.Group>
+						<Form.Group className="mrgn-15">
+							<Form.Label htmlFor="genres">Genre(s):</Form.Label>
+							<Form.Control size="lg" as="textarea" id="genres" name="genres" rows={10} required={true} />
+						</Form.Group>
 						<Form.Group className="mrgn-15">
 							<Form.Label htmlFor="cover">Cover URL:</Form.Label>
 							<Form.Control size="lg" type="text" id="coverUrl" name="coverUrl" required={true} />

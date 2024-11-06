@@ -122,3 +122,9 @@ td {
 td p {
     font-size: medium;
 }
+
+.radio {
+    padding-left: 15px;
+    font-size: medium;
+    text-decoration: none;
+}
