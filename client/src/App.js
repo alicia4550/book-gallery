@@ -20,9 +20,14 @@ function App() {
 		author : "Charles Duhigg",
 		description : "",
 		imageUrl : "1 The Power of Habit.jpg",
-		date : "2024-01-01"
+		date : "2024-01-01",
+		type : "Nonfiction",
+		genres : []
 	});
 	const [sortOrder, setSortOrder] = React.useState("2");
+	const [searchTerm, setSearchTerm] = React.useState("");
+	const [filterType, setFilterType] = React.useState("1");
+	const [filterGenres, setFilterGenres] = React.useState("");
 	const [view, setView] = React.useState(0);
 
 	function openModal(id) {
@@ -33,21 +38,15 @@ function App() {
 			author : book.author,
 			description : book.description,
 			imageUrl : book.imageurl,
-			date : book.date
+			date : book.date,
+			type : book.type,
+			genres : book.genres.split(" / ")
 		});
 		setShowBookModal(true);
 	}
 
 	function closeBookModal() {
 		setShowBookModal(false);
-	}
-
-	function filterBooks(e) {
-		let search = e.target.value.toLowerCase();
-
-		const filtered = books.filter(book => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search));
-		setFilteredBooks(filtered);
-		sortBooks(sortOrder);
 	}
 
 	function sortBooks(order) {
@@ -101,6 +100,33 @@ function App() {
 		}
 	}
 
+	function filterBooks(search, type) {
+		setSearchTerm(search);
+		setFilterType(type);
+		let filtered = books.filter(book => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search));
+
+		switch(type) {
+			case "1":
+				break;
+			case "2":
+				filtered = filtered.filter(book => book.type === "Fiction");;
+				break;
+			case "3":
+				filtered = filtered.filter(book => book.type === "Nonfiction");;
+				break;
+			default:
+				break;
+		}
+
+		setFilteredBooks(filtered);
+
+		sortBooks(sortOrder);
+	}
+
+	function filterBooksByGenres(genres) {
+
+	}
+
 	React.useEffect(() => {
 		fetch("/getBooks")
 		.then((res) => res.json())
@@ -115,7 +141,9 @@ function App() {
 				author : book.author,
 				description : book.description,
 				imageUrl : book.imageurl,
-				date : book.date
+				date : book.date,
+				type : book.type,
+				genres : book.genres.split(" / ")
 			});
 		});
 	}, []);
@@ -142,7 +170,9 @@ function App() {
 				author : book.author,
 				description : book.description,
 				imageUrl : book.imageurl,
-				date : book.date
+				date : book.date,
+				type : book.type,
+				genres : book.genres.split(" / ")
 			});
 		}
 		
@@ -162,7 +192,7 @@ function App() {
 					<Form.Control
 						size="lg" type="text" placeholder="Search..."
 						id="searchBar"
-						onInput={(e)=>filterBooks(e)}
+						onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterType)}
 					/>
 				</div>
 				<div className="col-md-2">
@@ -195,6 +225,38 @@ function App() {
 					/>
 					{/* <button onClick={()=>setView(0)} style={{float: "left"}}><FontAwesomeIcon icon={faTh} /></button>
 					<button onClick={()=>setView(1)} style={{float: "right"}}><FontAwesomeIcon icon={faList} /></button> */}
+				</div>
+			</div>
+
+			{/* Genre Filter */}
+			<div className="row" id="filter">
+				<div className="col-md-2">
+					<Form.Label>Filter:</Form.Label>
+				</div>
+				<div className="col-md-2">
+					<Form.Label id="filterTypeLabel" htmlFor="filterType" style={{"float": "right"}}>Type:</Form.Label>
+				</div>
+				<div className="col-md-3">
+					<Form.Select size="lg" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, e.target.value)}>
+						<option value={1}>All</option>
+						<option value={2}>Fiction</option>
+						<option value={3}>Nonfiction</option>
+					</Form.Select>
+				</div>
+				<div className="col-md-2">
+					<Form.Label id="filterGenreLabel" htmlFor="filterGenre" style={{"float": "right"}}>Genre(s):</Form.Label>
+				</div>
+				<div className="col-md-3">
+					<Form.Select size="lg" id="filterGenre" name="filterGenre" defaultValue={1} onInput={(e)=>filterBooksByGenres(e.target.value)}>
+						<option value={1}>Date Read (Oldest to Newest)</option>
+						<option value={2}>Date Read (Newest to Oldest)</option>
+						<option value={3}>Author, First Name (A - Z)</option>
+						<option value={4}>Author, First Name (Z - A)</option>
+						<option value={5}>Author, Last Name (A - Z)</option>
+						<option value={6}>Author, Last Name (Z - A)</option>
+						<option value={7}>Title (A - Z)</option>
+						<option value={8}>Title (Z - A)</option>
+					</Form.Select>
 				</div>
 			</div>
 
