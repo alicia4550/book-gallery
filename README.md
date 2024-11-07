@@ -2,35 +2,42 @@
 
 ## About the Project
 
-![Project Screenshot](demo1.png)
+![Project Screenshot](demo_img/demo1.png)
 *Project Screenshot*
 
 This project is a web-based collage of books I've read. 
 
 There are two different view modes, gallery view and list view. In gallery view, only the book covers are shown - more details are shown in a separate modal. In list view, book covers are shown along with additional details beside it.
 
-![List View](demo7.png)
+![List View](demo_img/demo7.png)
 *List View*
 
 A modal is displayed when a book is clicked on, providing more details about the book - a larger image of the cover, the title, the author(s), and a description.
 
-![Book Modal](demo2.png)
+![Book Modal](demo_img/demo2.png)
 *Book Modal*
 
 New books can be added directly on the web interface. Data can either be manually added, or can be pulled from the Google Books API through a search on the title. Clicking the "Search" button performs an API call to search for books based on what is entered in the "Title" field. A modal is then shown, displaying a list of books retrieved from the API. Clicking on a book will populate the form fields with the data for the selected book. 
 
-![Form Panel](demo3.png)
+![Form Panel 1](demo_img/demo3.png)
+![Form Panel 2](demo_img/demo8.png)
 *Form Panel*
 
-![Modal of Retrieved Books](demo6.png)
+![Modal of Retrieved Books](demo_img/demo6.png)
 *Modal of Retrieved Books*
 
-A search filter allows for filtering on author and title. Sorting is also available based on date read, author name, and title.
+A search filter allows for filtering on author and title. The ability to filtering by type (fiction, nonfiction, etc.) and by genre is also present. Sorting is also available based on date read, author name, and title.
 
-![Searching](demo4.png)
-*Searching*
+![Searching by author and/or title](demo_img/demo4.png)
+*Searching by author and/or title*
 
-![Sorting](demo5.png)
+![Filtering by type](demo_img/demo9.png)
+*Filtering by type*
+
+![Filtering by genre](demo_img/demo10.png)
+*Filtering by genre*
+
+![Sorting](demo_img/demo5.png)
 *Sorting*
 
 Data is stored in a Microsoft Excel document. 
