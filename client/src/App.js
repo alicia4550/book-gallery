@@ -3,6 +3,7 @@ import './App.css';
 
 import {Form, Table} from "react-bootstrap";
 import {faTh, faList} from "@fortawesome/free-solid-svg-icons"
+import Select from 'react-select'
 
 import Book from "./components/Book";
 import BookModal from "./components/BookModal";
@@ -27,7 +28,8 @@ function App() {
 	const [sortOrder, setSortOrder] = React.useState("2");
 	const [searchTerm, setSearchTerm] = React.useState("");
 	const [filterType, setFilterType] = React.useState("1");
-	const [filterGenres, setFilterGenres] = React.useState("");
+	const [filterGenres, setFilterGenres] = React.useState([]);
+	const [genres, setGenres] = React.useState([]);
 	const [view, setView] = React.useState(0);
 
 	function openModal(id) {
@@ -100,7 +102,7 @@ function App() {
 		}
 	}
 
-	function filterBooks(search, type) {
+	function filterBooks(search, type, genres) {
 		setSearchTerm(search);
 		setFilterType(type);
 		let filtered = books.filter(book => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search));
@@ -118,13 +120,21 @@ function App() {
 				break;
 		}
 
+		if (genres.length > 0) {
+			filtered = filtered.filter(book => genres.some(genre => book.genres.includes(genre)));
+		}
+
 		setFilteredBooks(filtered);
 
 		sortBooks(sortOrder);
 	}
 
-	function filterBooksByGenres(genres) {
-
+	function filterBooksByGenres(selectedOptions) {
+		let genres = selectedOptions.map((option) => {
+			return option.value;
+		});
+		setFilterGenres(genres);
+		filterBooks(searchTerm, filterType, genres);
 	}
 
 	React.useEffect(() => {
@@ -133,7 +143,7 @@ function App() {
 		.then((data) => {
 			setBooks(data.message);
 			setFilteredBooks(data.message);
-			sortBooks(sortOrder);
+			sortBooks("2");
 			let book = data.message[0];
 			setCurrentBook({
 				id : book.id,
@@ -146,6 +156,15 @@ function App() {
 				genres : book.genres.split(" / ")
 			});
 		});
+
+		fetch("/getGenres")
+		.then((res) => res.json())
+		.then((data) => {
+			let options = data.message.map((genre, index) => {
+				return {value: genre, label: genre};
+			});
+			setGenres(options);
+		})
 	}, []);
 
 	React.useEffect(() => {
@@ -192,11 +211,11 @@ function App() {
 					<Form.Control
 						size="lg" type="text" placeholder="Search..."
 						id="searchBar"
-						onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterType)}
+						onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterType, filterGenres)}
 					/>
 				</div>
 				<div className="col-md-2">
-					<Form.Label id="sortLabel" htmlFor="sort">Sort by:</Form.Label>
+					<Form.Label className="label-align" id="sortLabel" htmlFor="sort">Sort by:</Form.Label>
 				</div>
 				<div className="col-md-3">
 					<Form.Select size="lg" id="sort" name="sort" defaultValue={2} onInput={(e)=>sortBooks(e.target.value)}>
@@ -230,33 +249,24 @@ function App() {
 
 			{/* Genre Filter */}
 			<div className="row" id="filter">
-				<div className="col-md-2">
-					<Form.Label>Filter:</Form.Label>
+				<div className="col-md-1">
+					<Form.Label style={{lineHeight: "250%"}}>Filter by:</Form.Label>
 				</div>
-				<div className="col-md-2">
-					<Form.Label id="filterTypeLabel" htmlFor="filterType" style={{"float": "right"}}>Type:</Form.Label>
+				<div className="col-md-1">
+					<Form.Label className="label-align" id="filterTypeLabel" htmlFor="filterType">Type:</Form.Label>
 				</div>
 				<div className="col-md-3">
-					<Form.Select size="lg" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, e.target.value)}>
+					<Form.Select size="lg" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, e.target.value, filterGenres)}>
 						<option value={1}>All</option>
 						<option value={2}>Fiction</option>
 						<option value={3}>Nonfiction</option>
 					</Form.Select>
 				</div>
-				<div className="col-md-2">
-					<Form.Label id="filterGenreLabel" htmlFor="filterGenre" style={{"float": "right"}}>Genre(s):</Form.Label>
+				<div className="col-md-1">
+					<Form.Label className="label-align" id="filterGenreLabel" htmlFor="filterGenre">Genre(s):</Form.Label>
 				</div>
-				<div className="col-md-3">
-					<Form.Select size="lg" id="filterGenre" name="filterGenre" defaultValue={1} onInput={(e)=>filterBooksByGenres(e.target.value)}>
-						<option value={1}>Date Read (Oldest to Newest)</option>
-						<option value={2}>Date Read (Newest to Oldest)</option>
-						<option value={3}>Author, First Name (A - Z)</option>
-						<option value={4}>Author, First Name (Z - A)</option>
-						<option value={5}>Author, Last Name (A - Z)</option>
-						<option value={6}>Author, Last Name (Z - A)</option>
-						<option value={7}>Title (A - Z)</option>
-						<option value={8}>Title (Z - A)</option>
-					</Form.Select>
+				<div className="col-md-6">
+					<Select options={genres} isMulti="true" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
 				</div>
 			</div>
 

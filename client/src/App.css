@@ -57,18 +57,13 @@ body {
 	height: 50px;
 }
 
-#sortLabel {
-	float: right;
-	line-height: 250%;
-}
-
-select{
+select {
 	height: 50px!important;
 }
 
 #filterSort {
 	margin-top: 25px;
-	margin-bottom: 25px;
+	margin-bottom: 20px;
 	font-size: large;
 }
 
@@ -127,4 +122,25 @@ td p {
     padding-left: 15px;
     font-size: medium;
     text-decoration: none;
+}
+
+#filterGenre {
+    font-size: small;
+}
+
+div:has(input[name=filterGenre]) {
+    overflow: visible;
+}
+
+.css-13cymwt-control, .css-t3ipsp-control {
+    min-height: 50px!important;
+}
+
+#filter {
+    margin-bottom: 25px;
+}
+
+.label-align {
+    line-height: 250%;
+    float: right;
 }

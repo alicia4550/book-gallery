@@ -123,4 +123,17 @@ app.get('/getBooks', function(req, res) {
 	}
 
 	res.json({ message: books });
+});
+
+app.get('/getGenres', function(req, res) {
+    var bookdata = xlsx.parse(__dirname + '/bookdata.xlsx')[0].data;
+	bookdata.shift();
+
+	var genres = [];
+	for (const book of bookdata) {
+		genres.push(...book[7].split(" / "));
+	}
+    genres = [...new Set(genres)].sort();
+
+	res.json({ message: genres });
 })
