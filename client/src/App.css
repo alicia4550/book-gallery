@@ -1,11 +1,11 @@
 .App {
-    width: 100%;
-    overflow-x: hidden;
+	width: 100%;
+	overflow-x: hidden;
 }
 
 body {
 	background-color: #faf0e6;
-	padding: 100px;
+	padding: 50px;
 }
 
 .gallery {
@@ -22,24 +22,24 @@ body {
 }
 
 .modal80 {
-    max-width: none !important;
-    width: 80%;
+	max-width: none !important;
+	width: 80%;
 }
 
 .modal h1 {
-    font-size: 3.5rem;
+	font-size: 3.5rem;
 }
 
 .modal h2 {
-    font-size: 2.5rem;
+	font-size: 2.5rem;
 }
 
 .modal p {
-    font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 #bookDetails {
-    padding-right: 50px;
+	padding-right: 50px;
 }
 
 #modal-img {
@@ -68,7 +68,7 @@ select {
 }
 
 .form-label {
-    font-size: large;
+	font-size: large;
 }
 
 button {
@@ -78,71 +78,75 @@ button {
 }
 
 .accordion-header {
-    margin-top: 0px;
+	margin-top: 0px;
 }
 
 .accordion-button {
-    font-size: 2rem;
+	font-size: 2rem;
 }
 
 .mrgn-15 {
-    margin: 15px 0px;
+	margin: 15px 0px;
 }
 
 .mrgn-btm-15 {
-    margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 
 td {
-    padding: 15px!important;
+	padding: 15px!important;
 }
 
 #descriptionText {
-    position: absolute;
-    left: -9999px;
+	position: absolute;
+	left: -9999px;
 }
 
 .svg-inline--fa {
-    height: 2em;
+	height: 2em;
 }
 
 #views {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 #views button {
-    margin: 10px 0px;
+	margin: 10px 0px;
 }
 
 td p {
-    font-size: medium;
+	font-size: medium;
+}
+
+th p {
+	font-size: large;
 }
 
 .radio {
-    padding-left: 15px;
-    font-size: medium;
-    text-decoration: none;
+	padding-left: 15px;
+	font-size: medium;
+	text-decoration: none;
 }
 
 #filterGenre {
-    font-size: small;
+	font-size: small;
 }
 
 div:has(input[name=filterGenre]) {
-    overflow: visible;
+	overflow: visible;
 }
 
 .css-13cymwt-control, .css-t3ipsp-control {
-    min-height: 50px!important;
+	min-height: 50px!important;
 }
 
 #filter {
-    margin-bottom: 25px;
+	margin-bottom: 25px;
 }
 
 .label-align {
-    line-height: 250%;
-    float: right;
+	line-height: 250%;
+	float: right;
 }
 
 .genre-list {
@@ -154,7 +158,37 @@ div:has(input[name=filterGenre]) {
 }
 
 .genre-list-item {
-    border-radius: 15px;
-    background-color: #E8E8E8;
-    padding: 7px 10px 0px 10px;
+	border-radius: 15px;
+	background-color: #E8E8E8;
+	padding: 7px 10px 0px 10px;
+}
+
+nav ul {
+	list-style: none;
+	display: flex;
+	background-color: black;
+	margin-bottom: 20px;
+}
+
+nav ul li {
+	padding: 20px;
+}
+
+nav ul li a {
+	color: white;
+	text-decoration: none;
+	font-size: large;
+}
+
+nav a.active {
+	border-bottom: 4px solid;
+}
+
+nav a:hover, nav a:focus {
+	color: lightslategrey;
+	text-decoration: none;
+}
+
+.stat-text {
+	font-size: x-large;
 }

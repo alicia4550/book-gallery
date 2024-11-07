@@ -22,7 +22,7 @@ export default function BookModal(props) {
 						</div>
 						<div className="genre-list">
 							{props.genres.map((genre, index) => (
-								<div className="genre-list-item">
+								<div className="genre-list-item" key={index}>
 									<p>{genre}</p>
 								</div>
 							))}
