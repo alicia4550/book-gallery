@@ -53,6 +53,8 @@ export default function NewBookForm(props) {
 			document.getElementById("descriptionText").innerHTML = categories.join("<br>");
 			document.getElementById("genres").value = document.getElementById("descriptionText").innerText;
 
+            document.getElementById("pageCount").value = data.volumeInfo.printedPageCount;
+
 			if (data.volumeInfo.hasOwnProperty("imageLinks")) {
 				let imageLink = getImageLink(data.volumeInfo.imageLinks);
 				document.getElementById("coverUrl").value = imageLink.replace("&edge=curl", "");
@@ -111,6 +113,10 @@ export default function NewBookForm(props) {
 							<Form.Label htmlFor="description">Description:</Form.Label>
 							<Form.Control size="lg" as="textarea" id="description" name="description" rows={10} required={true} />
 							<div id="descriptionText" tabIndex={"-1"}></div>
+						</Form.Group>
+                        <Form.Group className="mrgn-15">
+							<Form.Label htmlFor="cover">Page Count:</Form.Label>
+							<Form.Control size="lg" type="number" id="pageCount" name="pageCount" required={true} />
 						</Form.Group>
 						<Form.Group className="mrgn-15">
 							<Form.Label htmlFor="type">Type:</Form.Label>

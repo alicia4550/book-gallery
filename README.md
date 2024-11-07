@@ -12,7 +12,7 @@ There are two different view modes, gallery view and list view. In gallery view,
 ![List View](demo_img/demo7.png)
 *List View*
 
-A modal is displayed when a book is clicked on, providing more details about the book - a larger image of the cover, the title, the author(s), and a description.
+A modal is displayed when a book is clicked on, providing more details about the book - a larger image of the cover, the title, the author(s), page count, description, and a list of genres.
 
 ![Book Modal](demo_img/demo2.png)
 *Book Modal*

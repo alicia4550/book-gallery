@@ -144,3 +144,17 @@ div:has(input[name=filterGenre]) {
     line-height: 250%;
     float: right;
 }
+
+.genre-list {
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 10px;
+}
+
+.genre-list-item {
+    border-radius: 15px;
+    background-color: #E8E8E8;
+    padding: 7px 10px 0px 10px;
+}

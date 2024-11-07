@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const exceljs = require('exceljs');
 var multer = require('multer');
 
-function Book(id, title, author, description, imageurl, date, type, genres) {
+function Book(id, title, author, description, imageurl, date, type, genres, pageCount) {
 	this.id = id;
 	this.title = title;
 	this.author = author;
@@ -16,6 +16,7 @@ function Book(id, title, author, description, imageurl, date, type, genres) {
 	this.date = date;
     this.type = type;
     this.genres = genres;
+    this.pageCount = pageCount
 }
 
 var bookdata = xlsx.parse(__dirname + '/bookdata.xlsx')[0].data;
@@ -23,7 +24,7 @@ bookdata.shift();
 
 var books = [];
 for (const book of bookdata) {
-	books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5], book[6], book[7]));
+	books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5], book[6], book[7], book[8]));
 }
 
 var storage = multer.diskStorage({
@@ -103,6 +104,7 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 		getRowInsert.getCell('F').value = today;
         getRowInsert.getCell('G').value = req.body.type;
         getRowInsert.getCell('H').value = req.body.genres.replaceAll("\r\n", " / ");
+        getRowInsert.getCell('I').value = Number(req.body.pageCount);
 		getRowInsert.commit();
 		return workbook.xlsx.writeFile(nameFileExcel);
 	});
@@ -119,7 +121,7 @@ app.get('/getBooks', function(req, res) {
 
 	var books = [];
 	for (const book of bookdata) {
-		books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5], book[6], book[7]));
+		books.push(new Book(book[0], book[1], book[2], book[3], book[4], book[5], book[6], book[7], book[8]));
 	}
 
 	res.json({ message: books });

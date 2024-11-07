@@ -23,7 +23,8 @@ function App() {
 		imageUrl : "1 The Power of Habit.jpg",
 		date : "2024-01-01",
 		type : "Nonfiction",
-		genres : []
+		genres : [],
+		pageCount : 0
 	});
 	const [sortOrder, setSortOrder] = React.useState("2");
 	const [searchTerm, setSearchTerm] = React.useState("");
@@ -42,7 +43,8 @@ function App() {
 			imageUrl : book.imageurl,
 			date : book.date,
 			type : book.type,
-			genres : book.genres.split(" / ")
+			genres : book.genres.split(" / "),
+			pageCount : book.pageCount
 		});
 		setShowBookModal(true);
 	}
@@ -153,7 +155,8 @@ function App() {
 				imageUrl : book.imageurl,
 				date : book.date,
 				type : book.type,
-				genres : book.genres.split(" / ")
+				genres : book.genres.split(" / "),
+				pageCount : book.pageCount
 			});
 		});
 
@@ -191,7 +194,8 @@ function App() {
 				imageUrl : book.imageurl,
 				date : book.date,
 				type : book.type,
-				genres : book.genres.split(" / ")
+				genres : book.genres.split(" / "),
+				pageCount : book.pageCount
 			});
 		}
 		
@@ -316,6 +320,8 @@ function App() {
 				author={currentBook.author}
 				description={currentBook.description}
 				imageUrl={currentBook.imageUrl}
+				pageCount={currentBook.pageCount}
+				genres={currentBook.genres}
 				closeModal={closeBookModal}
 			/>
 		</div>
