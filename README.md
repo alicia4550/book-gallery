@@ -40,6 +40,11 @@ A search filter allows for filtering on author and title. The ability to filteri
 ![Sorting](demo_img/demo5.png)
 *Sorting*
 
+The sorting and filtering functionality is encapsulated in a collapsible sidebar, which can be closed to allow for more books to be shown on a single line.
+
+![Modal of Retrieved Books](demo_img/demo14.png)
+*Collapsed Sidebar*
+
 In addition, there is a page that displays numerous statistics, both in terms of the total and the year to date values. Measured statistics include books read, pages read, top authors, percentage of fiction and nonfiction books read, and top genres.
 
 ![Statistics 1](demo_img/demo11.png)

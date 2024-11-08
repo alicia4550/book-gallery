@@ -1,8 +1,9 @@
 import React from "react";
 import './App.css';
 
-import {Form, Table} from "react-bootstrap";
-import {faTh, faList} from "@fortawesome/free-solid-svg-icons"
+import {Card, Collapse, Form, Table} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTh, faList, faAnglesRight, faAnglesLeft} from "@fortawesome/free-solid-svg-icons"
 import Select from 'react-select'
 
 import Book from "./components/Book";
@@ -32,6 +33,7 @@ function Gallery() {
 	const [filterGenres, setFilterGenres] = React.useState([]);
 	const [genres, setGenres] = React.useState([]);
 	const [view, setView] = React.useState(0);
+	const [openSidebar, setOpenSidebar] = React.useState(true);
 
 	function openModal(id) {
 		let book = books[id - 1];
@@ -210,107 +212,99 @@ function Gallery() {
 		<div className="App">
 			<NewBookForm id={!books ? 1 : books.length + 1}/>
 
-			<div className="row" id="filterSort">
-				<div className="col-md-6">
-					<Form.Control
-						size="lg" type="text" placeholder="Search..."
-						id="searchBar"
-						onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterType, filterGenres)}
-					/>
-				</div>
-				<div className="col-md-2">
-					<Form.Label className="label-align" id="sortLabel" htmlFor="sort">Sort by:</Form.Label>
-				</div>
-				<div className="col-md-3">
-					<Form.Select size="lg" id="sort" name="sort" defaultValue={2} onInput={(e)=>sortBooks(e.target.value)}>
-						<option value={1}>Date Read (Oldest to Newest)</option>
-						<option value={2}>Date Read (Newest to Oldest)</option>
-						<option value={3}>Author, First Name (A - Z)</option>
-						<option value={4}>Author, First Name (Z - A)</option>
-						<option value={5}>Author, Last Name (A - Z)</option>
-						<option value={6}>Author, Last Name (Z - A)</option>
-						<option value={7}>Title (A - Z)</option>
-						<option value={8}>Title (Z - A)</option>
-					</Form.Select>
-				</div>
-				<div className="col-md-1" id="views">
-					<ViewButton 
-						id={0}
-						view={view}
-						setView={setView}
-						icon={faTh}
-					/>
-					<ViewButton 
-						id={1}
-						view={view}
-						setView={setView}
-						icon={faList}
-					/>
-					{/* <button onClick={()=>setView(0)} style={{float: "left"}}><FontAwesomeIcon icon={faTh} /></button>
-					<button onClick={()=>setView(1)} style={{float: "right"}}><FontAwesomeIcon icon={faList} /></button> */}
-				</div>
-			</div>
-
-			{/* Genre Filter */}
-			<div className="row" id="filter">
-				<div className="col-md-1">
-					<Form.Label style={{lineHeight: "250%"}}>Filter by:</Form.Label>
-				</div>
-				<div className="col-md-1">
-					<Form.Label className="label-align" id="filterTypeLabel" htmlFor="filterType">Type:</Form.Label>
-				</div>
-				<div className="col-md-3">
-					<Form.Select size="lg" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, e.target.value, filterGenres)}>
-						<option value={1}>All</option>
-						<option value={2}>Fiction</option>
-						<option value={3}>Nonfiction</option>
-					</Form.Select>
-				</div>
-				<div className="col-md-1">
-					<Form.Label className="label-align" id="filterGenreLabel" htmlFor="filterGenre">Genre(s):</Form.Label>
-				</div>
-				<div className="col-md-6">
-					<Select options={genres} isMulti="true" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
-				</div>
-			</div>
-
-			{/* Gallery */}
-			{view === 0 ?
-			<div className="gallery">
-				{!filteredBooks ? <p>"Loading..."</p> : filteredBooks.map((book, index) => {
-					return (
-						<Book
-							key={book.id}
-							id={book.id}
-							title={book.title}
-							imageUrl={book.imageurl}
-							handleClick={openModal}
-						/>
-					)
-				})}
-			</div> :
-			<div className="list">
-				{!filteredBooks ? <p>"Loading..."</p> : 
-				<Table>
-					<tbody>
-						{filteredBooks.map((book, index) => {
-							return (
-								<BookListRow
-									key={book.id}
-									id={book.id}
-									title={book.title}
-									author={book.author}
-									description={book.description}
-									imageUrl={book.imageurl}
-									handleClick={openModal}
+			<div className="flex-container">
+				<div style={{ minHeight: '150px' }}>
+					<Collapse in={openSidebar} dimension="width" id="sidebar">
+						<div>
+							<Card body style={{ width: '400px' }}>
+								<div id="viewsContainer">
+									<div id="views">
+										<ViewButton 
+											id={0}
+											view={view}
+											setView={setView}
+											icon={faTh}
+										/>
+										<ViewButton 
+											id={1}
+											view={view}
+											setView={setView}
+											icon={faList}
+										/>
+									</div>
+								</div>
+								<Form.Label htmlFor="sort">Sort by:</Form.Label>
+								<Form.Select size="lg" className="form-input" id="sort" name="sort" defaultValue={2} onInput={(e)=>sortBooks(e.target.value)}>
+									<option value={1}>Date Read (Oldest to Newest)</option>
+									<option value={2}>Date Read (Newest to Oldest)</option>
+									<option value={3}>Author, First Name (A - Z)</option>
+									<option value={4}>Author, First Name (Z - A)</option>
+									<option value={5}>Author, Last Name (A - Z)</option>
+									<option value={6}>Author, Last Name (Z - A)</option>
+									<option value={7}>Title (A - Z)</option>
+									<option value={8}>Title (Z - A)</option>
+								</Form.Select>
+								<Form.Label htmlFor="searchBar">Search:</Form.Label>
+								<Form.Control
+									size="lg" type="text" placeholder="Search..."
+									className="form-input" id="searchBar"
+									onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterType, filterGenres)}
 								/>
-							)
-						})}
-					</tbody>
-				</Table>
-				}
+								<Form.Label htmlFor="filterType">Type:</Form.Label>
+									<Form.Select size="lg" className="form-input" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, e.target.value, filterGenres)}>
+									<option value={1}>All</option>
+									<option value={2}>Fiction</option>
+									<option value={3}>Nonfiction</option>
+								</Form.Select>
+								<Form.Label htmlFor="filterGenre">Genre(s):</Form.Label>
+								<Select options={genres} isMulti="true" className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
+							</Card>
+						</div>
+					</Collapse>
 				</div>
-			}
+
+				<button id="toggleSidebar" onClick={() => setOpenSidebar(!openSidebar)}>
+					{openSidebar ? <FontAwesomeIcon icon={faAnglesLeft}/> : <FontAwesomeIcon icon={faAnglesRight}/>}
+				</button>
+
+				{/* Gallery */}
+				{view === 0 ?
+				<div className="gallery">
+					{!filteredBooks ? <p>"Loading..."</p> : filteredBooks.map((book, index) => {
+						return (
+							<Book
+								key={book.id}
+								id={book.id}
+								title={book.title}
+								imageUrl={book.imageurl}
+								handleClick={openModal}
+							/>
+						)
+					})}
+				</div> :
+				<div className="list">
+					{!filteredBooks ? <p>"Loading..."</p> : 
+					<Table>
+						<tbody>
+							{filteredBooks.map((book, index) => {
+								return (
+									<BookListRow
+										key={book.id}
+										id={book.id}
+										title={book.title}
+										author={book.author}
+										description={book.description}
+										imageUrl={book.imageurl}
+										handleClick={openModal}
+									/>
+								)
+							})}
+						</tbody>
+					</Table>
+					}
+				</div>
+				}
+			</div>	
 
 			{/* Book Modal */}
 			<BookModal

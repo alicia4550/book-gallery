@@ -5,7 +5,7 @@
 
 body {
 	background-color: #faf0e6;
-	padding: 50px;
+	padding: 40px;
 }
 
 .gallery {
@@ -53,7 +53,6 @@ body {
 }
 
 #searchBar {
-	margin: auto;
 	height: 50px;
 }
 
@@ -69,6 +68,10 @@ select {
 
 .form-label {
 	font-size: large;
+}
+
+.form-input {
+    margin-bottom: 15px;
 }
 
 button {
@@ -103,15 +106,21 @@ td {
 }
 
 .svg-inline--fa {
-	height: 2em;
+	height: 3em;
+}
+
+#viewsContainer {
+    width: 100%;
+    height: 20px;
 }
 
 #views {
-	vertical-align: middle;
+    float: right;
 }
 
 #views button {
-	margin: 10px 0px;
+	margin: 0px 5px;
+    background-color: white;
 }
 
 td p {
@@ -142,11 +151,6 @@ div:has(input[name=filterGenre]) {
 
 #filter {
 	margin-bottom: 25px;
-}
-
-.label-align {
-	line-height: 250%;
-	float: right;
 }
 
 .genre-list {
@@ -191,4 +195,23 @@ nav a:hover, nav a:focus {
 
 .stat-text {
 	font-size: x-large;
+}
+
+.flex-container {
+	width: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+	margin-top: 20px;
+}
+
+#toggleSidebar {
+    border-radius: 0px 10px 10px 0px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.175);;
+    background-color: white;
+    font-size: smaller;
+    padding: 5px;
+    margin-right: 5px;
 }
