@@ -5,7 +5,7 @@
 ![Project Screenshot](demo_img/demo1.png)
 *Project Screenshot*
 
-This project is a web-based collage of books I've read. 
+This project is a web-based collage of books I've read. It was created using the MERN stack.
 
 There are two different view modes, gallery view and list view. In gallery view, only the book covers are shown - more details are shown in a separate modal. In list view, book covers are shown along with additional details beside it.
 
@@ -55,6 +55,8 @@ In addition, there is a page that displays numerous statistics, both in terms of
 Data is stored in a Microsoft Excel document. 
 
 ## Built With
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Express JS](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![NodeJS](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
@@ -87,6 +89,21 @@ git clone https://github.com/alicia4550/book-gallery.git
 6. Create a file `api.js` and insert the following line, inserting the API key in the quotes:
 ```
 export const apiKey = "{INSERT API KEY HERE}";
+```
+
+7. Set up a MongoDB database `gallery` with the collection `books`.
+
+8. Replace the URI string on line 6 of `db.js` with the MongoDB deployment's connection string.
+
+9. Navigate to the `server` directory.
+
+10. Create a file `config.js` and insert the following lines:
+```
+const DB_PASSWORD = "{INSERT DATABASE PASSWORD HERE}";
+
+module.exports = {
+    DB_PASSWORD
+}
 ```
 
 ### Usage

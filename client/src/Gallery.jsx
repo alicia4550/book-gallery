@@ -45,7 +45,7 @@ function Gallery() {
 			imageUrl : book.imageurl,
 			date : book.date,
 			type : book.type,
-			genres : book.genres.split(" / "),
+			genres : book.genres,
 			pageCount : book.pageCount
 		});
 		setShowBookModal(true);
@@ -157,7 +157,7 @@ function Gallery() {
 				imageUrl : book.imageurl,
 				date : book.date,
 				type : book.type,
-				genres : book.genres.split(" / "),
+				genres : book.genres,
 				pageCount : book.pageCount
 			});
 		});
@@ -196,7 +196,7 @@ function Gallery() {
 				imageUrl : book.imageurl,
 				date : book.date,
 				type : book.type,
-				genres : book.genres.split(" / "),
+				genres : book.genres,
 				pageCount : book.pageCount
 			});
 		}
@@ -216,7 +216,7 @@ function Gallery() {
 				<div style={{ minHeight: '150px' }}>
 					<Collapse in={openSidebar} dimension="width" id="sidebar">
 						<div>
-							<Card body style={{ width: '400px' }}>
+							<Card body style={{ width: '300px' }}>
 								<div id="viewsContainer">
 									<div id="views">
 										<ViewButton 
