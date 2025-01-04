@@ -40,7 +40,8 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topAuthors ? <p>"Loading..."</p> : statistics.topAuthors.slice(0,5).map((author, index) => {
+						{!statistics.topAuthors ? <p>"Loading..."</p> : 
+						 statistics.topAuthors.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topAuthors.slice(0,5).map((author, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -55,6 +56,8 @@ function Statistics() {
 						</tbody>
 					</Table>
 					<h1>Fiction vs Nonfiction:</h1>
+					{!statistics.typeCount ? <p>"Loading..."</p> : 
+					 statistics.typeCount.length === 0 ? <p className="stat-text">No data available</p> :
 					<PieChart style={{height: "25%", margin: "25px 0px"}}
 						data={statistics.typeCount}
 						label={({ dataEntry }) => dataEntry.title + ": " + Math.round(dataEntry.percentage) + '% (' + dataEntry.value + ")"}
@@ -65,6 +68,7 @@ function Statistics() {
 						})}
 						labelPosition={60}
 					/>
+					}
 					<h1>Top Genres:</h1>
 					<Table>
 						<thead>
@@ -74,7 +78,8 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topGenres ? <p>"Loading..."</p> : statistics.topGenres.slice(0,5).map((genre, index) => {
+						{!statistics.topGenres ? <p>"Loading..."</p> : 
+						 statistics.topGenresYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topGenres.slice(0,5).map((genre, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -103,7 +108,8 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topAuthorsYTD ? <p>"Loading..."</p> : statistics.topAuthorsYTD.slice(0,5).map((author, index) => {
+						{!statistics.topAuthorsYTD ? <p>"Loading..."</p> : 
+						 statistics.topAuthorsYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topAuthorsYTD.slice(0,5).map((author, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -118,6 +124,8 @@ function Statistics() {
 						</tbody>
 					</Table>
 					<h1>Fiction vs Nonfiction (YTD):</h1>
+					{!statistics.typeCountYTD ? <p>"Loading..."</p> : 
+						 statistics.typeCountYTD.length === 0 ? <p className="stat-text">No data available</p> :
 					<PieChart style={{height: "25%", margin: "25px 0px"}}
 						data={statistics.typeCountYTD}
 						label={({ dataEntry }) => dataEntry.title + ": " + Math.round(dataEntry.percentage) + '% (' + dataEntry.value + ")"}
@@ -128,6 +136,7 @@ function Statistics() {
 						})}
 						labelPosition={60}
 					/>
+					}
 					<h1>Top Genres (YTD):</h1>
 					<Table>
 						<thead>
@@ -137,7 +146,8 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topGenresYTD ? <p>"Loading..."</p> : statistics.topGenresYTD.slice(0,5).map((genre, index) => {
+						{!statistics.topGenresYTD ? <p>"Loading..."</p> : 
+						 statistics.topGenresYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topGenresYTD.slice(0,5).map((genre, index) => {
 							return (
 								<tr key={index}>
 									<td>

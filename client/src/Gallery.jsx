@@ -46,7 +46,7 @@ function Gallery() {
 			date : book.date,
 			type : book.type,
 			genres : book.genres,
-			pageCount : book.pageCount
+			pageCount : book.pagecount
 		});
 		setShowBookModal(true);
 	}
@@ -158,7 +158,7 @@ function Gallery() {
 				date : book.date,
 				type : book.type,
 				genres : book.genres,
-				pageCount : book.pageCount
+				pageCount : book.pagecount
 			});
 		});
 
@@ -197,7 +197,7 @@ function Gallery() {
 				date : book.date,
 				type : book.type,
 				genres : book.genres,
-				pageCount : book.pageCount
+				pageCount : book.pagecount
 			});
 		}
 		

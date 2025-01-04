@@ -57,7 +57,7 @@ async function countTotalBooksRead(ytd) {
 	} : {};
 
 	const count = await books.countDocuments(query);
-	return count
+	return count;
 }
 
 async function countTotalPagesRead(ytd) {
@@ -71,6 +71,8 @@ async function countTotalPagesRead(ytd) {
 		{$project:{_id:0,total:1}});
 
 	const agg = await books.aggregate(pipeline).toArray();
+
+	if (agg.length == 0) return 0;
 	return agg[0].total;
 }
 
@@ -88,6 +90,8 @@ async function findTopAuthors(ytd) {
 		{$project:{"_id":0,"author_details":1}});
 
 	const agg = await books.aggregate(pipeline).toArray();
+
+	if (agg.length == 0) return [];
 
 	const counts = agg[0].author_details;
 	counts.sort((a, b) => b.count - a.count);
@@ -111,6 +115,8 @@ async function findTopGenres(ytd) {
 
 	const agg = await books.aggregate(pipeline).toArray();
 
+	if (agg.length == 0) return [];
+
 	const counts = agg[0].genre_details;
 	counts.sort((a, b) => b.count - a.count);
 
@@ -128,6 +134,8 @@ async function countType(ytd) {
 		{$group:{"_id":"$type", "count":{$sum:1}}});
 
 	const agg = await books.aggregate(pipeline).toArray();
+
+	if (agg.length == 0) return [];
 
 	const types = agg.map((el) => {
 		return {
