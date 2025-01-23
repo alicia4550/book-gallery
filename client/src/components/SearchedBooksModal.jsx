@@ -8,7 +8,7 @@ export default function SearchedBooksModal(props) {
 			<Modal.Body>
 				<Table>
 					<tbody>
-					{!props.items ? <p>"Loading..."</p> : props.items.map((book, index) => {
+					{!props.items || props.items.length === 0 ? <p className="text">No books found. Please add your new book manually.</p> : props.items.map((book, index) => {
 						return (
 							<BookTableRow
 								key={book.id}

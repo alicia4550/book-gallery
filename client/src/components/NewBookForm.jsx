@@ -5,11 +5,30 @@ import {Accordion, Button, Form} from "react-bootstrap";
 import { apiKey } from "../api";
 import SearchedBooksModal from "./SearchedBooksModal";
 import PreviewCoverModal from "./PreviewCoverModal";
+import ISBNModal from "./ISBNModal";
 
 export default function NewBookForm(props) {
 	function showSearchedBooks() {
 		let searchTerm = document.getElementById("title").value;
 		let apiUrl = "https://www.googleapis.com/books/v1/volumes?q="+searchTerm.replace(" ", "+")+"&key="+apiKey;
+		fetch(apiUrl)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			setSearchedBooks(data.items);
+			setShowSearchedBooksModal(true);
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+	}
+
+	function showSearchedBookByISBN(isbn) {
+		let apiUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:"+isbn+"&key="+apiKey;
 		fetch(apiUrl)
 		.then(response => {
 			if (!response.ok) {
@@ -99,11 +118,16 @@ export default function NewBookForm(props) {
 		setShowPreviewCoverModal(false);
 	}
 
+	function closeISBNModal() {
+		setShowISBNModal(false);
+	}
+
 	const [searchedBooks, setSearchedBooks] = React.useState([]);
 	const [showSearchedBooksModal, setShowSearchedBooksModal] = React.useState(false);
 	const [bookTitle, setBookTitle] = React.useState("");
 	const [coverUrl, setCoverUrl] = React.useState("");
 	const [showPreviewCoverModal, setShowPreviewCoverModal] = React.useState(false);
+	const [showISBNModal, setShowISBNModal] = React.useState(false);
 
 	return (
 		<>
@@ -113,11 +137,14 @@ export default function NewBookForm(props) {
 				<Accordion.Body>
 					<Form id="addBookForm" method="post" action="/addBook" encType="multipart/form-data">
 						<Form.Control id="id" name="id" hidden={true} value={props.id} readOnly={true}/> 
+						<Form.Group className="mrgn-15">
+							<Button variant="primary" size="lg" onClick={() => setShowISBNModal(true)}>Search by ISBN</Button>
+						</Form.Group>
 						<Form.Group className="mrgn-btm-15">
 							<Form.Label htmlFor="title">Title:</Form.Label>
 							<Form.Control size="lg" type="text" id="title" name="title" required={true} />
 							<br/>
-							<Button variant="primary" size="lg" onClick={showSearchedBooks}>Search</Button>
+							<Button variant="primary" size="lg" onClick={showSearchedBooks}>Search by Title</Button>
 						</Form.Group>
 						<Form.Group className="mrgn-15">
 							<Form.Label htmlFor="author">Author:</Form.Label>
@@ -171,6 +198,11 @@ export default function NewBookForm(props) {
 			closeModal={closePreviewCoverModal}
 			coverUrl={coverUrl}
 			bookTitle={bookTitle}
+		/>
+		<ISBNModal
+			showModal={showISBNModal}
+			closeModal={closeISBNModal}
+			searchBook={showSearchedBookByISBN}
 		/>
 		</>
 	)

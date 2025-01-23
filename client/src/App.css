@@ -231,3 +231,17 @@ nav a:hover, nav a:focus {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.text {
+	font-size: medium;
+}
+
+#videoInput {
+	align-items: center;
+}
+
+video {
+	width: 50%;
+	margin-left: 25%;
+	margin-right: 25%;
+}

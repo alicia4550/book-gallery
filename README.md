@@ -17,14 +17,27 @@ A modal is displayed when a book is clicked on, providing more details about the
 ![Book Modal](demo_img/demo2.png)
 *Book Modal*
 
-New books can be added directly on the web interface. Data can either be manually added, or can be pulled from the Google Books API through a search on the title. Clicking the "Search" button performs an API call to search for books based on what is entered in the "Title" field. A modal is then shown, displaying a list of books retrieved from the API. Clicking on a book will populate the form fields with the data for the selected book. 
+New books can be added directly on the web interface. Data can either be manually added, or can be pulled from the Google Books API. 
 
 ![Form Panel 1](demo_img/demo3.png)
 ![Form Panel 2](demo_img/demo8.png)
 *Form Panel*
 
+Clicking the "Search by Title" button performs an API call to search for books based on what is entered in the "Title" field. A modal is then shown, displaying a list of books retrieved from the API. Clicking on a book will populate the form fields with the data for the selected book. 
+
 ![Modal of Retrieved Books](demo_img/demo6.png)
 *Modal of Retrieved Books*
+
+Clicking the "Search by ISBN" button opens a modal where there is the option to either scan the ISBN barcode from the book using a camera (can choose between any connected video capturing device) or manually enter the ISBN, allowing for easy retrieval of the correct edition of the book. Once the scanner finds and decodes the barcode, an API call is immediately made to the Google Books API to find the book by the ISBN. If the ISBN is manually entered, the call is made when the "Search by ISBN" button in the modal is clicked.
+
+![ISBN Input Modal - Live Video Input](demo_img/demo15.png)
+*ISBN Search Modal - Live Video Input*
+
+![ISBN Input Modal - Manual Input](demo_img/demo16.png)
+*ISBN Search Modal - Manual Input*
+
+![Book Retrieved by ISBN Search](demo_img/demo17.png)
+*Book Retrieved by ISBN Search*
 
 A search filter allows for filtering on author and title. The ability to filtering by type (fiction, nonfiction, etc.) and by genre is also present. Sorting is also available based on date read, author name, and title.
 
@@ -50,9 +63,7 @@ In addition, there is a page that displays numerous statistics, both in terms of
 ![Statistics 1](demo_img/demo11.png)
 ![Statistics 2](demo_img/demo12.png)
 ![Statistics 3](demo_img/demo13.png)
-*Statistics*
-
-Data is stored in a Microsoft Excel document. 
+*Statistics* 
 
 ## Built With
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
