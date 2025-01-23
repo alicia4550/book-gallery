@@ -213,7 +213,7 @@ function Gallery() {
 			<NewBookForm id={!books ? 1 : books.length + 1}/>
 
 			<div className="flex-container">
-				<div style={{ minHeight: '150px' }}>
+				<div id="sidebarContainer" style={{ minHeight: '150px' }}>
 					<Collapse in={openSidebar} dimension="width" id="sidebar">
 						<div>
 							<Card body style={{ width: '300px' }}>

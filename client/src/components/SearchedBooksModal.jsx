@@ -25,7 +25,7 @@ export default function SearchedBooksModal(props) {
 				</Table>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" size="lg" onClick={props.closeBookModal}>
+					<Button variant="secondary" size="lg" onClick={props.closeModal}>
 						Close
 					</Button>
 				</Modal.Footer>

@@ -40,6 +40,7 @@ var download = function(uri, filename, callback){
 
 function setImageFileName(req) {
 	var title = req.body.title.indexOf(':') == -1 ? req.body.title : req.body.title.substring(0, req.body.title.indexOf(':'));
+	title = title.replace(/[/\\?%*:|"<>]/g, '');
 	var fileName = req.body.id + " " + title + ".jpg";
 	return fileName;
 }

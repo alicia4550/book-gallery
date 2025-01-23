@@ -4,6 +4,7 @@ import {Accordion, Button, Form} from "react-bootstrap";
 
 import { apiKey } from "../api";
 import SearchedBooksModal from "./SearchedBooksModal";
+import PreviewCoverModal from "./PreviewCoverModal";
 
 export default function NewBookForm(props) {
 	function showSearchedBooks() {
@@ -88,8 +89,21 @@ export default function NewBookForm(props) {
 		}
 	}
 
+	function showPreviewCover() {
+		setBookTitle(document.getElementById("title").value);
+		setCoverUrl(document.getElementById("coverUrl").value);
+		setShowPreviewCoverModal(true);
+	}
+
+	function closePreviewCoverModal() {
+		setShowPreviewCoverModal(false);
+	}
+
 	const [searchedBooks, setSearchedBooks] = React.useState([]);
 	const [showSearchedBooksModal, setShowSearchedBooksModal] = React.useState(false);
+	const [bookTitle, setBookTitle] = React.useState("");
+	const [coverUrl, setCoverUrl] = React.useState("");
+	const [showPreviewCoverModal, setShowPreviewCoverModal] = React.useState(false);
 
 	return (
 		<>
@@ -132,6 +146,8 @@ export default function NewBookForm(props) {
 						<Form.Group className="mrgn-15">
 							<Form.Label htmlFor="cover">Cover URL:</Form.Label>
 							<Form.Control size="lg" type="text" id="coverUrl" name="coverUrl" required={true} />
+							<br/>
+							<Button variant="primary" size="lg" onClick={showPreviewCover}>Preview Cover Image</Button>
 						</Form.Group>
 						<Form.Group className="mrgn-15">
 							<Form.Label htmlFor="cover">Cover:</Form.Label>
@@ -149,6 +165,12 @@ export default function NewBookForm(props) {
 			closeModal={closeSearchedBooksModal}
 			items={searchedBooks}
 			getBook={getBook}
+		/>
+		<PreviewCoverModal
+			showModal={showPreviewCoverModal}
+			closeModal={closePreviewCoverModal}
+			coverUrl={coverUrl}
+			bookTitle={bookTitle}
 		/>
 		</>
 	)
