@@ -3,7 +3,7 @@ import './App.css';
 
 import {Card, Collapse, Form, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTh, faList, faAnglesRight, faAnglesLeft} from "@fortawesome/free-solid-svg-icons"
+import {faTh, faList, faAnglesRight, faAnglesLeft, faSave} from "@fortawesome/free-solid-svg-icons"
 import Select from 'react-select'
 
 import Book from "./components/Book";
@@ -141,6 +141,23 @@ function Gallery() {
 		filterBooks(searchTerm, filterType, genres);
 	}
 
+	function downloadData() {
+		fetch("/download")
+		.then((res) => res.blob())
+		.then((blob) => {
+			const url = window.URL.createObjectURL(new Blob([blob]));
+			const link = document.createElement("a");
+			link.href = url;
+			link.download = "books.xlsx";
+			document.body.appendChild(link);
+	
+			link.click();
+	
+			document.body.removeChild(link);
+			window.URL.revokeObjectURL(url);
+		});
+	}
+
 	React.useEffect(() => {
 		fetch("/getBooks")
 		.then((res) => res.json())
@@ -258,6 +275,7 @@ function Gallery() {
 								</Form.Select>
 								<Form.Label htmlFor="filterGenre">Genre(s):</Form.Label>
 								<Select options={genres} isMulti="true" className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
+								<button id="exportBtn" className="form-control" onClick={downloadData}><FontAwesomeIcon icon={faSave}/> Export data as Excel</button>
 							</Card>
 						</div>
 					</Collapse>

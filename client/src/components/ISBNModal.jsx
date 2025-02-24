@@ -16,7 +16,7 @@ export default function ISBNModal(props) {
 	
 	const { ref } = useZxing({
 		paused : !props.showModal,
-		deviceId : deviceId != "" ? deviceId : "",
+		deviceId : deviceId !== "" ? deviceId : "",
 		onDecodeResult(result) {
 			const isbn = result.getText();
 			props.searchBook(isbn);

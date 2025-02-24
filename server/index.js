@@ -5,6 +5,7 @@ const request = require('request');
 const express = require("express");
 const bodyParser = require('body-parser');
 var multer = require('multer');
+const XLSX = require("xlsx");
 
 function Book(id, title, author, description, imageurl, date, type, genres, pageCount) {
 	this.id = id;
@@ -82,7 +83,7 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 	let today = new Date();
 	const book = new Book(Number(req.body.id), 
 							req.body.title,
-							req.body.author, 
+							req.body.author.split(", "), 
 							req.body.description, 
 							setImageFileName(req), 
 							today, 
@@ -100,9 +101,56 @@ app.get('/getBooks', function(req, res) {
 	db.findAllBooks().then((result) => {
 		var books = [];
 		for (const book of result) {
-			books.push(new Book(book.id, book.title, book.author, book.description, book.imageurl, book.date, book.type, book.genres, book.pagecount));
+			books.push(new Book(book.id, book.title, book.author.join(", "), book.description, book.imageurl, book.date, book.type, book.genres, book.pagecount));
 		}
-		res.json({ message: result });
+		res.json({ message: books });
+	}).catch(console.dir);
+});
+
+app.get('/download', function(req, res) {
+	db.findAllBooks().then((result) => {
+		// Books Sheet
+		var bookdata = JSON.parse(JSON.stringify(result));
+		bookdata.map((book, index) => {
+			book._id = book._id.toString();
+			book.author = book.author.join(", ");
+			book.genres = book.genres.join(", ");
+			return book;
+		});
+		var workbook = XLSX.utils.book_new();
+		var ws_allData = XLSX.utils.json_to_sheet(bookdata);
+		XLSX.utils.book_append_sheet(workbook, ws_allData, "Books");
+		let exportFileName = "Books.xlsx";
+
+		Promise.all([
+			db.countTotalBooksRead(false),
+			db.countTotalPagesRead(false),
+			db.findTopAuthors(false),
+			db.findTopGenres(false),
+			db.countType(false),
+		]).then((stats) => {
+			// Statistics Sheet
+			var statsData = [
+				["Statistic", "Value"],
+				["Total Books Read", stats[0]],
+				["Total Pages Read", stats[1]],
+				["Total Fiction Books Read", stats[4].find((obj) => obj.title === "Fiction").value],
+				["Total Nonfiction Books Read", stats[4].find((obj) => obj.title === "Nonfiction").value]
+			  ];
+			var ws_stats = XLSX.utils.aoa_to_sheet(statsData);
+			XLSX.utils.book_append_sheet(workbook, ws_stats, "Statistics");
+
+			// Authors Sheet
+			var ws_authors = XLSX.utils.json_to_sheet(stats[2]);
+			XLSX.utils.book_append_sheet(workbook, ws_authors, "Authors");
+
+			// Genres Sheet
+			var ws_genres = XLSX.utils.json_to_sheet(stats[3]);
+			XLSX.utils.book_append_sheet(workbook, ws_genres, "Genres");
+
+			XLSX.writeFile(workbook, "./server/public/" + exportFileName);
+			res.download("./server/public/" + exportFileName);
+		});
 	}).catch(console.dir);
 });
 

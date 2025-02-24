@@ -65,6 +65,13 @@ In addition, there is a page that displays numerous statistics, both in terms of
 ![Statistics 3](demo_img/demo13.png)
 *Statistics* 
 
+The statistics can also be downloaded into an Excel document by clicking the "Export data to Excel" button in the Gallery page. The Excel document contains four sheets: Books (all book data), Statistics (total books read, pages read, fiction books read and nonfiction books read), Authors (number of books read by each author), and Genres (number of books read in each genre)
+
+![Export](demo_img/demo18.png)
+*Exporting data*
+![Excel Spreadsheet](demo_img/demo19.png)
+*Excel spreadsheet*
+
 ## Built With
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Express JS](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)

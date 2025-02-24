@@ -245,3 +245,11 @@ video {
 	margin-left: 25%;
 	margin-right: 25%;
 }
+
+#exportBtn {
+	font-size: medium;
+}
+
+#exportBtn .svg-inline--fa {
+	height: 1em;
+}

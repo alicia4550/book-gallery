@@ -132,3 +132,4 @@ dist
 config.js
 update-db.js
 bookdata.xlsx
+public/Books.xlsx

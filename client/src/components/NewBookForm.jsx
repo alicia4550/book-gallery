@@ -61,7 +61,7 @@ export default function NewBookForm(props) {
 			document.getElementById("descriptionText").innerHTML = data.volumeInfo.description;
 			document.getElementById("description").value = document.getElementById("descriptionText").innerText;
 
-			let categories = data.volumeInfo.categories.join("<br>").replaceAll(" / ", "<br>").split("<br>");
+			let categories = data.volumeInfo.hasOwnProperty("categories") ? data.volumeInfo.categories.join("<br>").replaceAll(" / ", "<br>").split("<br>") : [];
 			categories = [...new Set(categories)];
 
 			if (categories.join().includes("Fiction")) {
