@@ -21,7 +21,7 @@ function Book(id, title, author, description, imageurl, date, type, genres, page
 
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, './public/images/')
+		cb(null, './server/public/images/')
 	},
 	filename: function (req, file, cb) {
 		cb(null, setImageFileName(req))
