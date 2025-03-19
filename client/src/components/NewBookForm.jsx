@@ -61,8 +61,8 @@ export default function NewBookForm(props) {
 			document.getElementById("descriptionText").innerHTML = data.volumeInfo.description;
 			document.getElementById("description").value = document.getElementById("descriptionText").innerText;
 
-			let categories = data.volumeInfo.hasOwnProperty("categories") ? data.volumeInfo.categories.join("<br>").replaceAll(" / ", "<br>").split("<br>") : [];
-			categories = [...new Set(categories)];
+			let categories = data.volumeInfo.hasOwnProperty("categories") ? data.volumeInfo.categories.join(" / ").split(" / ") : [];
+			categories = [...new Set(categories)].filter((el) => el !== 'General' && el !== 'Subjects & Themes');
 
 			if (categories.join().includes("Fiction")) {
 				document.getElementById("type-fiction").checked = true;
