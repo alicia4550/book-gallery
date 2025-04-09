@@ -5,6 +5,9 @@ import {Card, Collapse, Form, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTh, faList, faAnglesRight, faAnglesLeft, faSave} from "@fortawesome/free-solid-svg-icons"
 import Select from 'react-select'
+import { DatePicker } from 'rsuite';
+
+import 'rsuite/DatePicker/styles/index.css';
 
 import Book from "./components/Book";
 import BookModal from "./components/BookModal";
@@ -22,13 +25,15 @@ function Gallery() {
 		author : "Charles Duhigg",
 		description : "",
 		imageUrl : "1 The Power of Habit.jpg",
-		date : "2024-01-01",
+		date : "2022-07-15",
 		type : "Nonfiction",
 		genres : [],
 		pageCount : 0
 	});
 	const [sortOrder, setSortOrder] = React.useState("2");
 	const [searchTerm, setSearchTerm] = React.useState("");
+	const [filterDateFrom, setFilterDateFrom] = React.useState(new Date("2022-07-15 00:00:00"));
+	const [filterDateTo, setFilterDateTo] = React.useState(new Date());
 	const [filterType, setFilterType] = React.useState("1");
 	const [filterGenres, setFilterGenres] = React.useState([]);
 	const [genres, setGenres] = React.useState([]);
@@ -106,10 +111,18 @@ function Gallery() {
 		}
 	}
 
-	function filterBooks(search, type, genres) {
+	function filterBooks(search, dateFrom, dateTo, type, genres) {
+		if (isNaN(dateFrom) || isNaN(dateTo)) return;
 		setSearchTerm(search);
+		setFilterDateFrom(dateFrom);
+		setFilterDateTo(dateTo);
 		setFilterType(type);
+
 		let filtered = books.filter(book => book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search));
+
+		if (dateFrom === null) dateFrom = new Date('2022-07-15 00:00:00');
+		if (dateTo === null) dateTo = new Date();
+		filtered = filtered.filter(book => new Date(book.date) >= dateFrom && new Date(book.date) <= dateTo);
 
 		switch(type) {
 			case "1":
@@ -138,7 +151,7 @@ function Gallery() {
 			return option.value;
 		});
 		setFilterGenres(genres);
-		filterBooks(searchTerm, filterType, genres);
+		filterBooks(searchTerm, filterDateFrom, filterDateTo, filterType, genres);
 	}
 
 	function downloadData() {
@@ -265,16 +278,20 @@ function Gallery() {
 								<Form.Control
 									size="lg" type="text" placeholder="Search..."
 									className="form-input" id="searchBar"
-									onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterType, filterGenres)}
+									onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterDateFrom, filterDateTo, filterType, filterGenres)}
 								/>
+								<Form.Label htmlFor="dateFrom">Date from:</Form.Label>
+								<DatePicker id="dateFrom" className="datepicker" size="lg" value={filterDateFrom} format="dd/MM/yyyy" onChange={(date)=>filterBooks(searchTerm, date, filterDateTo, filterType, filterGenres)} />
+								<Form.Label htmlFor="dateTo">Date to:</Form.Label>
+								<DatePicker id="dateTo" className="datepicker" size="lg" value={filterDateTo} format="dd/MM/yyyy" onChange={(date)=>filterBooks(searchTerm, filterDateFrom, date, filterType, filterGenres)} />
 								<Form.Label htmlFor="filterType">Type:</Form.Label>
-									<Form.Select size="lg" className="form-input" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, e.target.value, filterGenres)}>
+									<Form.Select size="lg" className="form-input" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, filterDateFrom, filterDateTo, e.target.value, filterGenres)}>
 									<option value={1}>All</option>
 									<option value={2}>Fiction</option>
 									<option value={3}>Nonfiction</option>
 								</Form.Select>
 								<Form.Label htmlFor="filterGenre">Genre(s):</Form.Label>
-								<Select options={genres} isMulti="true" className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
+								<Select options={genres} isMulti="true" menuPlacement="auto" minMenuHeight={300} className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
 								<button id="exportBtn" className="form-control" onClick={downloadData}><FontAwesomeIcon icon={faSave}/> Export data as Excel</button>
 							</Card>
 						</div>

@@ -39,10 +39,13 @@ Clicking the "Search by ISBN" button opens a modal where there is the option to 
 ![Book Retrieved by ISBN Search](demo_img/demo17.png)
 *Book Retrieved by ISBN Search*
 
-A search filter allows for filtering on author and title. The ability to filtering by type (fiction, nonfiction, etc.) and by genre is also present. Sorting is also available based on date read, author name, and title.
+A search filter allows for filtering on author and title. The ability to filtering by date read, by type (fiction, nonfiction, etc.), and by genre is also present. Sorting is also available based on date read, author name, and title.
 
 ![Searching by author and/or title](demo_img/demo4.png)
 *Searching by author and/or title*
+
+![Filtering by date read](demo_img/demo20.png)
+*Filtering by date read
 
 ![Filtering by type](demo_img/demo9.png)
 *Filtering by type*
