@@ -28,9 +28,9 @@ function Statistics() {
 			<div className="row">
 				<div className="col" style={{textAlign: "center"}}>
 					<h1>Total Books Read:</h1>
-					<p className="stat-text">{statistics.totalBooksRead}</p>
+					<a href="/" className="stat-text">{statistics.totalBooksRead}</a>
 					<h1>Total Pages Read:</h1>
-					<p className="stat-text">{statistics.totalPagesRead}</p>
+					<a href="/" className="stat-text">{statistics.totalPagesRead}</a>
 					<h1>Top Authors:</h1>
 					<Table>
 						<thead>
@@ -45,7 +45,7 @@ function Statistics() {
 							return (
 								<tr key={index}>
 									<td>
-										<p>{author.author}</p>
+										<a href={"/?searchTerm=" + author.author}>{author.author}</a>
 									</td>
 									<td>
 										<p>{author.count}</p>
@@ -67,6 +67,7 @@ function Statistics() {
 							fontFamily: 'sans-serif',
 						})}
 						labelPosition={60}
+						onClick={(e, i) => window.location.href = i === 1 ? "/?type=Fiction" : "/?type=Nonfiction"}
 					/>
 					}
 					<h1>Top Genres:</h1>
@@ -83,7 +84,7 @@ function Statistics() {
 							return (
 								<tr key={index}>
 									<td>
-										<p>{genre.genre}</p>
+										<a href={"/?genre=" + genre.genre.replace("&", "%26")}>{genre.genre}</a>
 									</td>
 									<td>
 										<p>{genre.count}</p>
@@ -96,9 +97,9 @@ function Statistics() {
 				</div>
 				<div className="col" style={{textAlign: "center"}}>
 					<h1>Total Books Read (YTD):</h1>
-					<p className="stat-text">{statistics.totalBooksReadYTD}</p>
+					<a href="/?ytd=true" className="stat-text">{statistics.totalBooksReadYTD}</a>
 					<h1>Total Pages Read (YTD):</h1>
-					<p className="stat-text">{statistics.totalPagesReadYTD}</p>
+					<a href="/?ytd=true" className="stat-text">{statistics.totalPagesReadYTD}</a>
 					<h1>Top Authors (YTD):</h1>
 					<Table>
 						<thead>
@@ -113,7 +114,7 @@ function Statistics() {
 							return (
 								<tr key={index}>
 									<td>
-										<p>{author.author}</p>
+									<a href={"/?searchTerm=" + author.author + "&ytd=true"}>{author.author}</a>
 									</td>
 									<td>
 										<p>{author.count}</p>
@@ -135,6 +136,7 @@ function Statistics() {
 							fontFamily: 'sans-serif',
 						})}
 						labelPosition={60}
+						onClick={(e, i) => window.location.href = (i === 1 ? "/?type=Fiction" : "/?type=Nonfiction") + "&ytd=true"}
 					/>
 					}
 					<h1>Top Genres (YTD):</h1>
@@ -151,7 +153,7 @@ function Statistics() {
 							return (
 								<tr key={index}>
 									<td>
-										<p>{genre.genre}</p>
+									<a href={"/?genre=" + genre.genre.replace("&", "%26") + "&ytd=true"}>{genre.genre}</a>
 									</td>
 									<td>
 										<p>{genre.count}</p>

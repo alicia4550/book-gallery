@@ -194,7 +194,9 @@ nav a:hover, nav a:focus {
 }
 
 .stat-text {
+	text-decoration: none;
 	font-size: x-large;
+	color: black;
 }
 
 .flex-container {
@@ -257,4 +259,10 @@ video {
 .datepicker {
 	width: 100%;
 	margin-bottom: 15px;
+}
+
+table a {
+	text-decoration: none;
+	font-size: medium;
+	color: black;
 }

@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTh, faList, faAnglesRight, faAnglesLeft, faSave} from "@fortawesome/free-solid-svg-icons"
 import Select from 'react-select'
 import { DatePicker } from 'rsuite';
+import { useSearchParams } from "react-router-dom";
 
 import 'rsuite/DatePicker/styles/index.css';
 
@@ -37,8 +38,11 @@ function Gallery() {
 	const [filterType, setFilterType] = React.useState("1");
 	const [filterGenres, setFilterGenres] = React.useState([]);
 	const [genres, setGenres] = React.useState([]);
+	const [defaultGenres, setDefaultGenres] = React.useState([]);
 	const [view, setView] = React.useState(0);
 	const [openSidebar, setOpenSidebar] = React.useState(true);
+
+	const [searchParams, setSearchParams] = useSearchParams();
 
 	function openModal(id) {
 		let book = books[id - 1];
@@ -147,6 +151,7 @@ function Gallery() {
 	}
 
 	function filterBooksByGenres(selectedOptions) {
+		setDefaultGenres(selectedOptions);
 		let genres = selectedOptions.map((option) => {
 			return option.value;
 		});
@@ -170,6 +175,12 @@ function Gallery() {
 			window.URL.revokeObjectURL(url);
 		});
 	}
+
+	React.useEffect(() => {
+		if (books !== null) {
+			filterBooks(searchTerm, filterDateFrom, filterDateTo, filterType, filterGenres);
+		}
+	}, [books])
 
 	React.useEffect(() => {
 		fetch("/getBooks")
@@ -199,8 +210,30 @@ function Gallery() {
 				return {value: genre, label: genre};
 			});
 			setGenres(options);
-		})
+		});
 	}, []);
+
+	React.useEffect(() => {
+		if (searchParams.get("ytd") !== null) {
+			let today = new Date();
+			setFilterDateFrom(new Date(today.getFullYear()+"-01-01 00:00:00"));
+		}
+		if (searchParams.get("searchTerm") !== null) {
+			setSearchTerm(searchParams.get("searchTerm").toLowerCase());
+			document.getElementById("searchBar").value = searchParams.get("searchTerm");
+		}
+		if (searchParams.get("type") !== null) {
+			if (searchParams.get("type") === "Fiction") {
+				setFilterType("2");
+			} else if (searchParams.get("type") === "Nonfiction") {
+				setFilterType("3");
+			}
+		}
+		if (searchParams.get("genre") !== null) {
+			setFilterGenres([searchParams.get("genre")]);
+			setDefaultGenres([{value: searchParams.get("genre"), label: searchParams.get("genre")}]);
+		}
+	}, [searchParams])
 
 	React.useEffect(() => {
 		function changeBook(event) {
@@ -285,13 +318,13 @@ function Gallery() {
 								<Form.Label htmlFor="dateTo">Date to:</Form.Label>
 								<DatePicker id="dateTo" className="datepicker" size="lg" value={filterDateTo} format="dd/MM/yyyy" onChange={(date)=>filterBooks(searchTerm, filterDateFrom, date, filterType, filterGenres)} />
 								<Form.Label htmlFor="filterType">Type:</Form.Label>
-									<Form.Select size="lg" className="form-input" id="filterType" name="filterType" defaultValue={1} onChange={(e)=>filterBooks(searchTerm, filterDateFrom, filterDateTo, e.target.value, filterGenres)}>
+									<Form.Select size="lg" className="form-input" id="filterType" name="filterType" defaultValue={searchParams.get("type") === null ? 1 : searchParams.get("type") === "Fiction" ? 2 : 3} onChange={(e)=>filterBooks(searchTerm, filterDateFrom, filterDateTo, e.target.value, filterGenres)}>
 									<option value={1}>All</option>
 									<option value={2}>Fiction</option>
 									<option value={3}>Nonfiction</option>
 								</Form.Select>
 								<Form.Label htmlFor="filterGenre">Genre(s):</Form.Label>
-								<Select options={genres} isMulti="true" menuPlacement="auto" minMenuHeight={300} className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
+								<Select options={genres} value={defaultGenres} isMulti="true" menuPlacement="auto" minMenuHeight={300} className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
 								<button id="exportBtn" className="form-control" onClick={downloadData}><FontAwesomeIcon icon={faSave}/> Export data as Excel</button>
 							</Card>
 						</div>
