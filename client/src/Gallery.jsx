@@ -324,14 +324,14 @@ function Gallery() {
 									<option value={3}>Nonfiction</option>
 								</Form.Select>
 								<Form.Label htmlFor="filterGenre">Genre(s):</Form.Label>
-								<Select options={genres} value={defaultGenres} isMulti="true" menuPlacement="auto" minMenuHeight={300} className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} />
+								<Select options={genres} value={defaultGenres} isMulti="true" menuPlacement="auto" minMenuHeight={300} className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} aria-label="Genre(s)"/>
 								<button id="exportBtn" className="form-control" onClick={downloadData}><FontAwesomeIcon icon={faSave}/> Export data as Excel</button>
 							</Card>
 						</div>
 					</Collapse>
 				</div>
 
-				<button id="toggleSidebar" onClick={() => setOpenSidebar(!openSidebar)}>
+				<button id="toggleSidebar" onClick={() => setOpenSidebar(!openSidebar)} aria-label={openSidebar ? "Close sidebar" : "Open sidebar"}>
 					{openSidebar ? <FontAwesomeIcon icon={faAnglesLeft}/> : <FontAwesomeIcon icon={faAnglesRight}/>}
 				</button>
 
