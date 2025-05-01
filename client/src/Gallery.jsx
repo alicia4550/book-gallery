@@ -7,6 +7,7 @@ import {faTh, faList, faAnglesRight, faAnglesLeft, faSave} from "@fortawesome/fr
 import Select from 'react-select'
 import { DatePicker } from 'rsuite';
 import { useSearchParams } from "react-router-dom";
+import { useQueries } from "react-query";
 
 import 'rsuite/DatePicker/styles/index.css';
 
@@ -16,7 +17,7 @@ import NewBookForm from "./components/NewBookForm";
 import BookListRow from "./components/BookListRow";
 import ViewButton from "./components/ViewButton";
 
-function Gallery() {
+function Gallery(props) {
 	const [books, setBooks] = React.useState(null);
 	const [filteredBooks, setFilteredBooks] = React.useState(null);
 	const [showBookModal, setShowBookModal] = React.useState(false);
@@ -180,38 +181,51 @@ function Gallery() {
 		if (books !== null) {
 			filterBooks(searchTerm, filterDateFrom, filterDateTo, filterType, filterGenres);
 		}
-	}, [books])
+	}, [books]);
 
-	React.useEffect(() => {
-		fetch("/getBooks")
-		.then((res) => res.json())
-		.then((data) => {
-			setBooks(data.message);
-			setFilteredBooks(data.message);
-			sortBooks("2");
-			let book = data.message[0];
-			setCurrentBook({
-				id : book.id,
-				title : book.title,
-				author : book.author,
-				description : book.description,
-				imageUrl : book.imageurl,
-				date : book.date,
-				type : book.type,
-				genres : book.genres,
-				pageCount : book.pagecount
-			});
-		});
+	async function fetchBooks() {
+		const res = await fetch("/getBooks");
+		return res.json();
+	}
 
-		fetch("/getGenres")
-		.then((res) => res.json())
-		.then((data) => {
-			let options = data.message.map((genre, index) => {
-				return {value: genre, label: genre};
-			});
-			setGenres(options);
+	async function fetchGenres() {
+		const res = await fetch("/getGenres");
+		return res.json();
+	}
+
+	const cache = useQueries([
+		{
+			queryKey: "books",
+			queryFn: fetchBooks
+		}, {
+			queryKey: "genres",
+			queryFn: fetchGenres
+		}
+	]);
+
+	if (cache[0].status === "success" && books === null) {
+		setFilteredBooks(cache[0].data.message);
+		sortBooks("2");
+		let book = cache[0].data.message[0];
+		setCurrentBook({
+			id : book.id,
+			title : book.title,
+			author : book.author,
+			description : book.description,
+			imageUrl : book.imageurl,
+			date : book.date,
+			type : book.type,
+			genres : book.genres,
+			pageCount : book.pagecount
 		});
-	}, []);
+		setBooks(cache[0].data.message);
+	}
+	if (cache[1].status === "success" && genres.length === 0) {
+		let options = cache[1].data.message.map((genre, index) => {
+			return {value: genre, label: genre};
+		});
+		setGenres(options);
+	}
 
 	React.useEffect(() => {
 		if (searchParams.get("ytd") !== null) {
@@ -273,7 +287,7 @@ function Gallery() {
 
 	return (
 		<div className="App">
-			<NewBookForm id={!books ? 1 : books.length + 1}/>
+			<NewBookForm id={!books ? 1 : books.length + 1} queryClient={props.queryClient}/>
 
 			<div className="flex-container">
 				<div id="sidebarContainer" style={{ minHeight: '150px' }}>

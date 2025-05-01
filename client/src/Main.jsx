@@ -5,10 +5,10 @@ import './App.css';
 import Gallery from './Gallery';
 import Statistics from './Statistics';
 
-function Main() {
+function Main(props) {
 	return (
 		<Routes>
-			<Route exact path='/' element={<Gallery />}></Route>
+			<Route exact path='/' element={<Gallery queryClient={props.queryClient} />}></Route>
 			<Route exact path='/statistics' element={<Statistics />}></Route>
 		</Routes>
 	);

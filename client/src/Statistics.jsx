@@ -2,35 +2,28 @@ import React from "react";
 import './App.css';
 import { Table } from "react-bootstrap";
 import { PieChart } from 'react-minimal-pie-chart';
+import { useQuery } from "react-query";
 
 function Statistics() {
-	const [statistics, setStatistics] = React.useState({
-		totalBooksRead : 0,
-		totalBooksReadYTD : 0,
-		totalPagesRead : 0,
-		totalPagesReadYTD : 0,
-		topAuthors : [],
-		topAuthorsYTD : [],
-		topGenres : [],
-		topGenresYTD : []
-	})
+	async function fetchStatistics() {
+		const res = await fetch("/getStatistics");
+  		return res.json();
+	}
 
-	React.useEffect(() => {
-		fetch("/getStatistics")
-		.then((res) => res.json())
-		.then((data) => {
-			setStatistics(data);
-		});
-	}, []);
+	const { data, status } = useQuery("statistics", fetchStatistics);
 
 	return (
+		<>
+		{status === "error" && <p>Error fetching data</p>}
+      	{status === "loading" && <p>Fetching data...</p>}
+      	{status === "success" && (
 		<div className='statistics'>
 			<div className="row">
 				<div className="col" style={{textAlign: "center"}}>
 					<h1>Total Books Read:</h1>
-					<a href="/" className="stat-text">{statistics.totalBooksRead}</a>
+					<a href="/" className="stat-text">{data.totalBooksRead}</a>
 					<h1>Total Pages Read:</h1>
-					<a href="/" className="stat-text">{statistics.totalPagesRead}</a>
+					<a href="/" className="stat-text">{data.totalPagesRead}</a>
 					<h1>Top Authors:</h1>
 					<Table>
 						<thead>
@@ -40,8 +33,7 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topAuthors ? <p>"Loading..."</p> : 
-						 statistics.topAuthors.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topAuthors.slice(0,5).map((author, index) => {
+						{ data.topAuthors.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : data.topAuthors.slice(0,5).map((author, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -56,10 +48,9 @@ function Statistics() {
 						</tbody>
 					</Table>
 					<h1>Fiction vs Nonfiction:</h1>
-					{!statistics.typeCount ? <p>"Loading..."</p> : 
-					 statistics.typeCount.length === 0 ? <p className="stat-text">No data available</p> :
+					{ data.typeCount.length === 0 ? <p className="stat-text">No data available</p> :
 					<PieChart style={{height: "25%", margin: "25px 0px"}}
-						data={statistics.typeCount}
+						data={data.typeCount}
 						label={({ dataEntry }) => dataEntry.title + ": " + Math.round(dataEntry.percentage) + '% (' + dataEntry.value + ")"}
 						labelStyle={(index) => ({
 							fill: "white",
@@ -79,8 +70,7 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topGenres ? <p>"Loading..."</p> : 
-						 statistics.topGenresYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topGenres.slice(0,5).map((genre, index) => {
+						{ data.topGenresYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : data.topGenres.slice(0,5).map((genre, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -97,9 +87,9 @@ function Statistics() {
 				</div>
 				<div className="col" style={{textAlign: "center"}}>
 					<h1>Total Books Read (YTD):</h1>
-					<a href="/?ytd=true" className="stat-text">{statistics.totalBooksReadYTD}</a>
+					<a href="/?ytd=true" className="stat-text">{data.totalBooksReadYTD}</a>
 					<h1>Total Pages Read (YTD):</h1>
-					<a href="/?ytd=true" className="stat-text">{statistics.totalPagesReadYTD}</a>
+					<a href="/?ytd=true" className="stat-text">{data.totalPagesReadYTD}</a>
 					<h1>Top Authors (YTD):</h1>
 					<Table>
 						<thead>
@@ -109,8 +99,7 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topAuthorsYTD ? <p>"Loading..."</p> : 
-						 statistics.topAuthorsYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topAuthorsYTD.slice(0,5).map((author, index) => {
+						{ data.topAuthorsYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : data.topAuthorsYTD.slice(0,5).map((author, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -125,10 +114,9 @@ function Statistics() {
 						</tbody>
 					</Table>
 					<h1>Fiction vs Nonfiction (YTD):</h1>
-					{!statistics.typeCountYTD ? <p>"Loading..."</p> : 
-						 statistics.typeCountYTD.length === 0 ? <p className="stat-text">No data available</p> :
+					{ data.typeCountYTD.length === 0 ? <p className="stat-text">No data available</p> :
 					<PieChart style={{height: "25%", margin: "25px 0px"}}
-						data={statistics.typeCountYTD}
+						data={data.typeCountYTD}
 						label={({ dataEntry }) => dataEntry.title + ": " + Math.round(dataEntry.percentage) + '% (' + dataEntry.value + ")"}
 						labelStyle={(index) => ({
 							fill: "white",
@@ -148,8 +136,7 @@ function Statistics() {
 							</tr>
 						</thead>
 						<tbody>
-						{!statistics.topGenresYTD ? <p>"Loading..."</p> : 
-						 statistics.topGenresYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : statistics.topGenresYTD.slice(0,5).map((genre, index) => {
+						{ data.topGenresYTD.length === 0 ? <tr><td colSpan={2}><p className="stat-text">No data available</p></td></tr> : data.topGenresYTD.slice(0,5).map((genre, index) => {
 							return (
 								<tr key={index}>
 									<td>
@@ -166,6 +153,8 @@ function Statistics() {
 				</div>
 			</div>
 		</div>
+		)}
+		</>
 	);
 }
 

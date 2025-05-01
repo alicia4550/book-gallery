@@ -122,6 +122,10 @@ export default function NewBookForm(props) {
 		setShowISBNModal(false);
 	}
 
+	function invalidateCache() {
+		props.queryClient.invalidateQueries(['statistics', 'books', 'genres']);
+	}
+
 	const [searchedBooks, setSearchedBooks] = React.useState([]);
 	const [showSearchedBooksModal, setShowSearchedBooksModal] = React.useState(false);
 	const [bookTitle, setBookTitle] = React.useState("");
@@ -135,7 +139,7 @@ export default function NewBookForm(props) {
 			<Accordion.Item eventKey="0">
 				<Accordion.Header>Add New Book</Accordion.Header>
 				<Accordion.Body>
-					<Form id="addBookForm" method="post" action="/addBook" encType="multipart/form-data">
+					<Form id="addBookForm" method="post" action="/addBook" encType="multipart/form-data" onSubmit={invalidateCache}>
 						<Form.Control id="id" name="id" hidden={true} value={props.id} readOnly={true}/> 
 						<Form.Group className="mrgn-15">
 							<Button variant="primary" size="lg" onClick={() => setShowISBNModal(true)}>Search by ISBN</Button>
