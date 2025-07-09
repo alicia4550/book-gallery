@@ -2,24 +2,19 @@ import React from "react";
 
 import {Accordion, Button, Form} from "react-bootstrap";
 
-import { apiKey } from "../api";
 import SearchedBooksModal from "./SearchedBooksModal";
 import PreviewCoverModal from "./PreviewCoverModal";
 import ISBNModal from "./ISBNModal";
 
 export default function NewBookForm(props) {
 	function showSearchedBooks() {
-		let searchTerm = document.getElementById("title").value;
-		let apiUrl = "https://www.googleapis.com/books/v1/volumes?q="+searchTerm.replace(" ", "+")+"&key="+apiKey;
-		fetch(apiUrl)
+		let searchTerm = document.getElementById("title").value.replace(" ", "+");
+		fetch("/getSearchedBooksByTitle?searchTerm="+searchTerm)
 		.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
 			return response.json();
 		})
 		.then(data => {
-			setSearchedBooks(data.items);
+			setSearchedBooks(data.message);
 			setShowSearchedBooksModal(true);
 		})
 		.catch(error => {
@@ -28,8 +23,7 @@ export default function NewBookForm(props) {
 	}
 
 	function showSearchedBookByISBN(isbn) {
-		let apiUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:"+isbn+"&key="+apiKey;
-		fetch(apiUrl)
+		fetch("/getSearchedBooksByISBN?isbn="+isbn)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
@@ -37,7 +31,7 @@ export default function NewBookForm(props) {
 			return response.json();
 		})
 		.then(data => {
-			setSearchedBooks(data.items);
+			setSearchedBooks(data.message);
 			setShowSearchedBooksModal(true);
 		})
 		.catch(error => {
@@ -46,54 +40,36 @@ export default function NewBookForm(props) {
 	}
 	
 	function getBook(volumeId) {
-		let apiUrl = "https://www.googleapis.com/books/v1/volumes/"+volumeId+"?key="+apiKey;
-		fetch(apiUrl)
+		fetch("/getSearchedBook?volumeId="+volumeId)
 		.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
 			return response.json();
 		})
 		.then(data => {
-			document.getElementById("title").value = data.volumeInfo.title + (data.volumeInfo.hasOwnProperty("subtitle") ? ": " + data.volumeInfo.subtitle : "");
-			document.getElementById("author").value = data.volumeInfo.authors.join(", ");
+			const searchedBook = data.message;
+			document.getElementById("title").value = searchedBook.title;
+			document.getElementById("author").value = searchedBook.author;
 			
-			document.getElementById("descriptionText").innerHTML = data.volumeInfo.description;
+			document.getElementById("descriptionText").innerHTML = searchedBook.description;
 			document.getElementById("description").value = document.getElementById("descriptionText").innerText;
 
-			let categories = data.volumeInfo.hasOwnProperty("categories") ? data.volumeInfo.categories.join(" / ").split(" / ") : [];
-			categories = [...new Set(categories)].filter((el) => el !== 'General' && el !== 'Subjects & Themes');
-
-			if (categories.join().includes("Fiction")) {
+			if (searchedBook.type === "Fiction") {
 				document.getElementById("type-fiction").checked = true;
 			} else {
 				document.getElementById("type-nonfiction").checked = true;
 			}
 
-			document.getElementById("descriptionText").innerHTML = categories.join("<br>");
+			document.getElementById("descriptionText").innerHTML = searchedBook.genres.join("<br>");
 			document.getElementById("genres").value = document.getElementById("descriptionText").innerText;
 
-            document.getElementById("pageCount").value = data.volumeInfo.printedPageCount;
+            document.getElementById("pageCount").value = searchedBook.pageCount;
 
-			if (data.volumeInfo.hasOwnProperty("imageLinks")) {
-				let imageLink = getImageLink(data.volumeInfo.imageLinks);
-				document.getElementById("coverUrl").value = imageLink.replace("&edge=curl", "");
-			}
+			document.getElementById("coverUrl").value = searchedBook.imageLink;
 
 			closeSearchedBooksModal();
 		})
 		.catch(error => {
 			console.error('Error:', error);
 		});
-	}
-
-	function getImageLink(imageLinks) {
-		if (imageLinks.hasOwnProperty("large")) return imageLinks.large;
-		else if (imageLinks.hasOwnProperty("medium")) return imageLinks.medium;
-		else if (imageLinks.hasOwnProperty("small")) return imageLinks.small;
-		else if (imageLinks.hasOwnProperty("thumbnail")) return imageLinks.thumbnail;
-		else if (imageLinks.hasOwnProperty("smallThumbnail")) return imageLinks.smallThumbnail;
-		else return "";
 	}
 
 	function closeSearchedBooksModal() {

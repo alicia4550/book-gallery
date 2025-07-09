@@ -1,4 +1,4 @@
-const DB_PASSWORD = require('./config.js').DB_PASSWORD;
+const DB_PASSWORD = process.env.DB_PASSWORD;
 
 var MongoClient = require('mongodb').MongoClient;
 

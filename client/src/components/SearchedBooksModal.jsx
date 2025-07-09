@@ -13,10 +13,10 @@ export default function SearchedBooksModal(props) {
 							<BookTableRow
 								key={book.id}
 								id={book.id}
-								imgUrl={book.volumeInfo.hasOwnProperty("imageLinks") ? book.volumeInfo.imageLinks.thumbnail : ""}
-								title={book.volumeInfo.title + (book.volumeInfo.hasOwnProperty("subtitle") ? ": " + book.volumeInfo.subtitle : "")}
-								author={book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : ""}
-								snippet={book.hasOwnProperty("searchInfo") ? book.searchInfo.textSnippet : ""}
+								imgUrl={book.imgUrl}
+								title={book.title}
+								author={book.author}
+								snippet={book.snippet}
 								getBook={props.getBook}
 							/>
 						)

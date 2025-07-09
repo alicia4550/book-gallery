@@ -1,4 +1,5 @@
 const db = require('./db.js');
+const api = require('./googleBooksApi.js');
 
 const fs = require('fs');
 const request = require('request');
@@ -6,6 +7,9 @@ const express = require("express");
 const bodyParser = require('body-parser');
 var multer = require('multer');
 const XLSX = require("xlsx");
+
+console.log(process.env.API_KEY);
+console.log(process.env.DB_PASSWORD);
 
 function Book(id, title, author, description, imageurl, date, type, genres, pageCount) {
 	this.id = id;
@@ -187,5 +191,30 @@ app.get('/getStatistics', function(req, res) {
 			typeCount : stats[8],
 			typeCountYTD : stats[9]
 		});
+	});
+});
+
+app.get('/getSearchedBooksByTitle', function(req, res) {
+	api.getSearchedBooksByTitle(req.query.searchTerm).then((result) => {
+		res.json({ message: result });
+	}).catch(e => {
+		console.log(e);
+	});
+});
+
+app.get('/getSearchedBooksByISBN', function(req, res) {
+	api.getSearchedBooksByISBN(req.query.isbn).then((result) => {
+		res.json({ message: result });
+	}).catch(e => {
+		console.log(e);
+	});
+});
+
+app.get('/getSearchedBook', function(req, res) {
+	console.log(req.query.volumeId);
+	api.getBook(req.query.volumeId).then((result) => {
+		res.json({ message: result });
+	}).catch(e => {
+		console.log(e);
 	});
 });

@@ -1,3 +1,2 @@
-start node server/index.js
-cd client
-start npm start
+start run-server.bat
+start run-client.bat

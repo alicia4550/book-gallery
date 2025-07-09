@@ -107,24 +107,18 @@ git clone https://github.com/alicia4550/book-gallery.git
 
 5. Navigate to the `client` directory.
 
-6. Create a file `api.js` and insert the following line, inserting the API key in the quotes:
+6. In the `run-server.bat` file, enter your API key in the following line:
 ```
-export const apiKey = "{INSERT API KEY HERE}";
+set API={INSERT API KEY HERE}
 ```
 
 7. Set up a MongoDB database `gallery` with the collection `books`.
 
-8. Replace the URI string on line 6 of `db.js` with the MongoDB deployment's connection string.
+8. Replace the URI string on line 6 of `server/db.js` with the MongoDB deployment's connection string.
 
-9. Navigate to the `server` directory.
-
-10. Create a file `config.js` and insert the following lines:
+9. In the `run-server.bat` file, enter your database password in the following line:
 ```
-const DB_PASSWORD = "{INSERT DATABASE PASSWORD HERE}";
-
-module.exports = {
-    DB_PASSWORD
-}
+set DB_PASSWORD={INSERT MONGODB PASSWORD HERE}
 ```
 
 ### Usage
