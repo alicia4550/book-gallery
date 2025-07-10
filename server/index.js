@@ -51,7 +51,7 @@ function setImageFileName(req) {
 }
 
 const app = express();
-const PORT = 3001;
+const PORT = 8080;
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
