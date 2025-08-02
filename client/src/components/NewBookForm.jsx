@@ -98,8 +98,10 @@ export default function NewBookForm(props) {
 		setShowISBNModal(false);
 	}
 
-	function invalidateCache() {
+	function onFormSubmit() {
 		props.queryClient.invalidateQueries(['statistics', 'books', 'genres']);
+
+		setIsFormSubmitted(true);
 	}
 
 	const [searchedBooks, setSearchedBooks] = React.useState([]);
@@ -108,6 +110,7 @@ export default function NewBookForm(props) {
 	const [coverUrl, setCoverUrl] = React.useState("");
 	const [showPreviewCoverModal, setShowPreviewCoverModal] = React.useState(false);
 	const [showISBNModal, setShowISBNModal] = React.useState(false);
+	const [isFormSubmitted, setIsFormSubmitted] = React.useState(false);
 
 	return (
 		<>
@@ -115,7 +118,7 @@ export default function NewBookForm(props) {
 			<Accordion.Item eventKey="0">
 				<Accordion.Header>Add New Book</Accordion.Header>
 				<Accordion.Body>
-					<Form id="addBookForm" method="post" action="/addBook" encType="multipart/form-data" onSubmit={invalidateCache}>
+					<Form id="addBookForm" method="post" action="/addBook" encType="multipart/form-data" onSubmit={onFormSubmit}>
 						<Form.Control id="id" name="id" hidden={true} value={props.id} readOnly={true}/> 
 						<Form.Group className="mrgn-15">
 							<Button variant="primary" size="lg" onClick={() => setShowISBNModal(true)}>Search by ISBN</Button>
@@ -160,9 +163,10 @@ export default function NewBookForm(props) {
 							<Form.Label htmlFor="cover">Cover:</Form.Label>
 							<Form.Control size="lg" type="file" id="cover" name="cover" accept="image/*" style={{height: "100%"}} onInput={setRequired} />
 						</Form.Group>
-						<Button variant="primary" type="submit" size="lg">
+						<Button variant="primary" type="submit" size="lg" disabled={isFormSubmitted}>
 							Submit
 						</Button>
+						<img src="/public/loader.gif" className="loader" hidden={!isFormSubmitted}></img>
 					</Form>
 				</Accordion.Body>
 			</Accordion.Item>

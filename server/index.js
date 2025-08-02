@@ -8,8 +8,18 @@ const bodyParser = require('body-parser');
 var multer = require('multer');
 const XLSX = require("xlsx");
 
-console.log(process.env.API_KEY);
-console.log(process.env.DB_PASSWORD);
+const { DefaultAzureCredential } = require('@azure/identity');
+const { BlobServiceClient } = require("@azure/storage-blob");
+
+const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
+if (!accountName) throw Error('Azure Storage accountName not found');
+
+const blobServiceClient = new BlobServiceClient(
+  `https://${accountName}.blob.core.windows.net`,
+  new DefaultAzureCredential()
+);
+
+const containerClient = blobServiceClient.getContainerClient("bookgallerycovers");
 
 function Book(id, title, author, description, imageurl, date, type, genres, pageCount) {
 	this.id = id;
@@ -22,17 +32,8 @@ function Book(id, title, author, description, imageurl, date, type, genres, page
 	this.genres = genres;
 	this.pageCount = pageCount;
 }
-
-var storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, './server/public/images/')
-	},
-	filename: function (req, file, cb) {
-		cb(null, setImageFileName(req))
-	}
-})
   
-var upload = multer({ storage: storage });
+var upload = multer({ storage: multer.memoryStorage() });
 
 var download = function(uri, filename, callback){
 	request.head(uri, function(err, res, body){
@@ -48,6 +49,24 @@ function setImageFileName(req) {
 	title = title.replace(/[/\\?%*:|"<>]/g, '');
 	var fileName = req.body.id + " " + title + ".jpg";
 	return fileName;
+}
+
+async function saveCoverImage(fileName, url, file) {
+	const blobData = url != '' ? await fetch(url).then(r => r.arrayBuffer()) : file.buffer;
+
+	// Get a block blob client
+	const blockBlobClient = containerClient.getBlockBlobClient(fileName);
+
+	// Display blob name and url
+	console.log(
+	`\nUploading to Azure storage as blob\n\tname: ${fileName}:\n\tURL: ${blockBlobClient.url}`
+	);
+
+	// Upload data to the blob
+	const uploadBlobResponse = await blockBlobClient.uploadData(blobData);
+	console.log(
+		`Blob was uploaded successfully. requestId: ${uploadBlobResponse.requestId}`
+	);
 }
 
 const app = express();
@@ -78,12 +97,6 @@ app.listen(PORT, (error) =>{
 app.post('/addBook', upload.single('cover'), function(req, res) {
 	console.log('receiving data ...');
 
-	if (req.body.coverUrl != '') {
-		download(req.body.coverUrl, './server/public/images/' + setImageFileName(req), function(){
-			console.log('saved image');
-		});
-	}
-
 	let today = new Date();
 	const book = new Book(Number(req.body.id), 
 							req.body.title,
@@ -95,17 +108,21 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 							req.body.genres.split("\r\n"),
 							Number(req.body.pageCount)
 						);
-	db.writeNewBook(book);
-
-	console.log('added data');
-	res.redirect('/');
+	Promise.all([
+		saveCoverImage(setImageFileName(req), req.body.coverUrl, req.file),
+		db.writeNewBook(book)
+	]).then(() => {
+		console.log('added data');
+		res.redirect('/');
+	});
 });
 
 app.get('/getBooks', function(req, res) {
 	db.findAllBooks().then((result) => {
 		var books = [];
 		for (const book of result) {
-			books.push(new Book(book.id, book.title, book.author.join(", "), book.description, book.imageurl, book.date, book.type, book.genres, book.pagecount));
+			let imageUrl = `https://bookgallerystorage.blob.core.windows.net/bookgallerycovers/${book.imageurl.replace(" ", "%20")}?${process.env.SAS_TOKEN}`;
+			books.push(new Book(book.id, book.title, book.author.join(", "), book.description, imageUrl, book.date, book.type, book.genres, book.pagecount));
 		}
 		res.json({ message: books });
 	}).catch(console.dir);

@@ -45,7 +45,7 @@ A search filter allows for filtering on author and title. The ability to filteri
 *Searching by author and/or title*
 
 ![Filtering by date read](demo_img/demo20.png)
-*Filtering by date read
+*Filtering by date read*
 
 ![Filtering by type](demo_img/demo9.png)
 *Filtering by type*
@@ -80,6 +80,7 @@ The statistics can also be downloaded into an Excel document by clicking the "Ex
 ![Express JS](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![NodeJS](https://img.shields.io/badge/Node%20js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Microsoft Azure](https://img.shields.io/badge/microsoft%20azure-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
@@ -109,7 +110,7 @@ git clone https://github.com/alicia4550/book-gallery.git
 
 6. In the `run-server.bat` file, enter your API key in the following line:
 ```
-set API={INSERT API KEY HERE}
+set API={INSERT GOOGLE BOOKS API KEY HERE}
 ```
 
 7. Set up a MongoDB database `gallery` with the collection `books`.
@@ -119,6 +120,25 @@ set API={INSERT API KEY HERE}
 9. In the `run-server.bat` file, enter your database password in the following line:
 ```
 set DB_PASSWORD={INSERT MONGODB PASSWORD HERE}
+```
+
+10. Set up an Azure Blob Storage account with a container `bookgallerycovers`.
+
+11. In the `run-server.bat` file, enter your Azure Storage account name in the following line:
+```
+set AZURE_STORAGE_ACCOUNT_NAME={INSERT AZURE STORAGE ACCOUNT NAME HERE}
+```
+
+12. Create a SAS token with read access to your storage account.
+
+13. In the `run-server.bat` file, enter your SAS token in the following line:
+```
+set SAS_TOKEN={INSERT AZURE STORAGE SAS TOKEN HERE}
+```
+
+14. Sign-in to Azure through the Azure CLI using the following command:
+```
+az login
 ```
 
 ### Usage

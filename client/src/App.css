@@ -266,3 +266,8 @@ table a {
 	font-size: medium;
 	color: black;
 }
+
+.loader {
+	width: 30px;
+	margin-left: 15px;
+}

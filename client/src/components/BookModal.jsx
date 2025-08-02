@@ -6,7 +6,7 @@ export default function BookModal(props) {
 			<Modal.Header closeButton />
 			<Modal.Body>
 				<div className="row">
-					<div className="col-md-5 text-center"><img id="modal-img" src={"/public/images/" + props.imageUrl} alt={props.title}/></div>
+					<div className="col-md-5 text-center"><img id="modal-img" src={props.imageUrl} alt={props.title}/></div>
 					<div className="col-md-7" id="bookDetails">
 						<b><h1 id="modal-title">{props.title}</h1></b>
 						<i><h2 id="modal-author">{props.author}</h2></i>

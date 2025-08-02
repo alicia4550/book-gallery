@@ -3,7 +3,7 @@ export default function Book(props) {
 		<button onClick={()=>props.handleClick(props.id)}>
 			<img 
 				className="cover-img" 
-				src={"public/images/" + props.imageUrl} 
+				src={props.imageUrl} 
 				alt={props.title} 
 			/>
 		</button>
