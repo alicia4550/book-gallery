@@ -115,7 +115,7 @@ set API={INSERT GOOGLE BOOKS API KEY HERE}
 
 7. Set up a MongoDB database `gallery` with the collection `books`.
 
-8. Replace the URI string on line 6 of `server/db.js` with the MongoDB deployment's connection string.
+8. Replace the URI string on line 6 of `db.js` with the MongoDB deployment's connection string.
 
 9. In the `run-server.bat` file, enter your database password in the following line:
 ```

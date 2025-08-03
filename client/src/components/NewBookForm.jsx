@@ -2,6 +2,8 @@ import React from "react";
 
 import {Accordion, Button, Form} from "react-bootstrap";
 
+import baseUrl from "../baseUrl";
+
 import SearchedBooksModal from "./SearchedBooksModal";
 import PreviewCoverModal from "./PreviewCoverModal";
 import ISBNModal from "./ISBNModal";
@@ -9,7 +11,7 @@ import ISBNModal from "./ISBNModal";
 export default function NewBookForm(props) {
 	function showSearchedBooks() {
 		let searchTerm = document.getElementById("title").value.replace(" ", "+");
-		fetch("/getSearchedBooksByTitle?searchTerm="+searchTerm)
+		fetch(`${baseUrl}/getSearchedBooksByTitle?searchTerm=${searchTerm}`)
 		.then(response => {
 			return response.json();
 		})
@@ -23,7 +25,7 @@ export default function NewBookForm(props) {
 	}
 
 	function showSearchedBookByISBN(isbn) {
-		fetch("/getSearchedBooksByISBN?isbn="+isbn)
+		fetch(`${baseUrl}/getSearchedBooksByISBN?isbn=${isbn}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error('Network response was not ok');
@@ -40,7 +42,7 @@ export default function NewBookForm(props) {
 	}
 	
 	function getBook(volumeId) {
-		fetch("/getSearchedBook?volumeId="+volumeId)
+		fetch(`${baseUrl}/getSearchedBook?volumeId=${volumeId}`)
 		.then(response => {
 			return response.json();
 		})
