@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/build",
   "dependencies": {
     "@babel/helpers": "^7.26.10",
     "@babel/runtime": "^7.26.10",
@@ -51,7 +52,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://bookgallery-a8b5bvbngqe4f9he.canadacentral-01.azurewebsites.net/",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@babel/plugin-transform-private-property-in-object": "^7.25.9"

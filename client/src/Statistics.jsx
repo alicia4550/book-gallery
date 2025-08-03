@@ -4,9 +4,11 @@ import { Table } from "react-bootstrap";
 import { PieChart } from 'react-minimal-pie-chart';
 import { useQuery } from "react-query";
 
+import baseUrl from "./baseUrl";
+
 function Statistics() {
 	async function fetchStatistics() {
-		const res = await fetch("/getStatistics");
+		const res = await fetch(`${baseUrl}/getStatistics`);
   		return res.json();
 	}
 

@@ -11,6 +11,8 @@ import { useQueries } from "react-query";
 
 import 'rsuite/DatePicker/styles/index.css';
 
+import baseUrl from "./baseUrl";
+
 import Book from "./components/Book";
 import BookModal from "./components/BookModal";
 import NewBookForm from "./components/NewBookForm";
@@ -161,7 +163,7 @@ function Gallery(props) {
 	}
 
 	function downloadData() {
-		fetch("/download")
+		fetch(`${baseUrl}/download`)
 		.then((res) => res.blob())
 		.then((blob) => {
 			const url = window.URL.createObjectURL(new Blob([blob]));
@@ -184,12 +186,12 @@ function Gallery(props) {
 	}, [books]);
 
 	async function fetchBooks() {
-		const res = await fetch("/getBooks");
+		const res = await fetch(`${baseUrl}/getBooks`);
 		return res.json();
 	}
 
 	async function fetchGenres() {
-		const res = await fetch("/getGenres");
+		const res = await fetch(`${baseUrl}/getGenres`);
 		return res.json();
 	}
 
