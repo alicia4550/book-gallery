@@ -1,9 +1,10 @@
+const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 
 var MongoClient = require('mongodb').MongoClient;
 
 // Replace the uri string with your MongoDB deployment's connection string.
-const uri = "mongodb+srv://aliciatran4550:"+DB_PASSWORD+"@bookscluster.hvysw.mongodb.net/?retryWrites=true&w=majority&appName=BooksCluster";
+const uri = "mongodb+srv://"+DB_USERNAME+":"+DB_PASSWORD+"@bookscluster.hvysw.mongodb.net/?retryWrites=true&w=majority&appName=BooksCluster";
 const client = new MongoClient(uri);
 // Get the database and collection on which to run the operation
 const database = client.db("gallery");

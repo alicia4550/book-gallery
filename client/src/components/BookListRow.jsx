@@ -1,3 +1,8 @@
+function getDescription(text) {
+	var description = text.split('\n').filter((line) => line.trim() !== '').join('\n');
+	return description.length > 500 ? description.substring(0, 500) + '...' : description;
+}
+
 export default function BookListRow(props) {
 	return (
 		<tr>
@@ -5,7 +10,7 @@ export default function BookListRow(props) {
 				<button onClick={()=>props.handleClick(props.id)}>
 					<img 
 						className="cover-img" 
-						src={"public/images/" + props.imageUrl} 
+						src={props.imageUrl} 
 						alt={props.title} 
 					/>
 				</button>
@@ -13,11 +18,9 @@ export default function BookListRow(props) {
 			<td>
 				<h2>{props.title}</h2>
 				<h3><i>{props.author}</i></h3>
-				<div>{props.description.split('\n').map((line, index) => (
-					<p key={index}>
-						{line.trim() === '' ? '' : line}
-					</p>
-				))}</div>
+				<div>
+					<p>{getDescription(props.description)}</p>
+				</div>
 			</td>
 		</tr>
 	);

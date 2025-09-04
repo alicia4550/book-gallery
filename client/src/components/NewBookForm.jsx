@@ -168,7 +168,7 @@ export default function NewBookForm(props) {
 						<Button variant="primary" type="submit" size="lg" disabled={isFormSubmitted}>
 							Submit
 						</Button>
-						<img src="/public/loader.gif" className="loader" hidden={!isFormSubmitted}></img>
+						<img src="/public/loader.gif" className="loader" hidden={!isFormSubmitted} alt="Submitting form..."></img>
 					</Form>
 				</Accordion.Body>
 			</Accordion.Item>
