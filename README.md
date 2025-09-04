@@ -117,8 +117,9 @@ set API={INSERT GOOGLE BOOKS API KEY HERE}
 
 8. Replace the URI string on line 6 of `db.js` with the MongoDB deployment's connection string.
 
-9. In the `run-server.bat` file, enter your database password in the following line:
+9. In the `run-server.bat` file, enter your database username and password in the following lines:
 ```
+set DB_USERNAME={INSERT MONGODB USERNAME HERE}
 set DB_PASSWORD={INSERT MONGODB PASSWORD HERE}
 ```
 
@@ -147,7 +148,7 @@ az login
 
 2. Run the `run.bat` file.
 
-3. Open `http://localhost:3000/` in your local browser.
+3. Open `http://localhost:3001/` in your local browser.
 
 ## License
 

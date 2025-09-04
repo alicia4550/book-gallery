@@ -31,7 +31,7 @@ export default function BookModal(props) {
 				</div>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant="secondary" size="lg" onClick={props.closeBookModal}>
+					<Button variant="secondary" size="lg" onClick={props.closeModal}>
 						Close
 					</Button>
 				</Modal.Footer>
