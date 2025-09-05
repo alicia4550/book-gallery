@@ -2,7 +2,7 @@ import {Modal, Button} from "react-bootstrap";
 
 export default function BookModal(props) {
 	return (
-		<Modal show={props.showModal} onHide={props.closeModal} animation={false} centered dialogClassName="modal80">
+		<Modal show={props.showModal} onHide={props.closeModal} animation={false} centered dialogClassName="modal80" onTouchStart={props.onTouchStart} onTouchMove={props.onTouchMove} onTouchEnd={props.onTouchEnd}>
 			<Modal.Header closeButton />
 			<Modal.Body>
 				<div className="row">

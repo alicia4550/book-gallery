@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 
-import {Card, Col, Collapse, Table} from "react-bootstrap";
+import {Card, Collapse, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faAnglesRight, faAnglesLeft, faAnglesUp, faAnglesDown} from "@fortawesome/free-solid-svg-icons"
 import { useSearchParams } from "react-router-dom";
@@ -44,6 +44,9 @@ function Gallery(props) {
 	const [openSidebar, setOpenSidebar] = React.useState(true);
 
 	const [searchParams, setSearchParams] = useSearchParams();
+
+	const [touchStart, setTouchStart] = React.useState(null)
+	const [touchEnd, setTouchEnd] = React.useState(null)
 
 	function openModal(id) {
 		let book = books[id - 1];
@@ -210,6 +213,54 @@ function Gallery(props) {
 		setGenres(options);
 	}
 
+	function changeBook(direction) {
+		let i = filteredBooks.findIndex(filteredBook => filteredBook.id === currentBook.id);
+
+		let book = filteredBooks[i];
+		if (direction === 'previous') {
+			// left arrow
+			book = filteredBooks[i > 1 ? i - 1 : 0];
+		}
+		else if (direction === 'next') {
+			// right arrow
+			book = filteredBooks[i < filteredBooks.length - 1 ? i + 1 : filteredBooks.length - 1];
+		}
+		
+		setCurrentBook({
+			id : book.id,
+			title : book.title,
+			author : book.author,
+			description : book.description,
+			imageUrl : book.imageurl,
+			date : book.date,
+			type : book.type,
+			genres : book.genres,
+			pageCount : book.pageCount
+		});
+	}
+
+	// the required distance between touchStart and touchEnd to be detected as a swipe
+	const minSwipeDistance = 50;
+
+	const onTouchStart = (e) => {
+		setTouchEnd(null); // otherwise the swipe is fired even with usual touch events
+		setTouchStart(e.targetTouches[0].clientX);
+	}
+
+	const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+	const onTouchEnd = () => {
+		if (!touchStart || !touchEnd) return;
+		const distance = touchStart - touchEnd;
+		const isLeftSwipe = distance > minSwipeDistance;
+		const isRightSwipe = distance < -minSwipeDistance;
+		if (isLeftSwipe) {
+			changeBook('next');
+		} else if (isRightSwipe) {
+			changeBook('previous');
+		}
+	}
+
 	React.useEffect(() => {
 		if (searchParams.get("ytd") !== null) {
 			let today = new Date();
@@ -233,38 +284,21 @@ function Gallery(props) {
 	}, [searchParams])
 
 	React.useEffect(() => {
-		function changeBook(event) {
+		function detectClick(event) {
 			if (!showBookModal) return;
 
-			let i = filteredBooks.findIndex(filteredBook => filteredBook.id === currentBook.id);
-	
-			let book = filteredBooks[i];
 			if (event.key === 'ArrowLeft') {
-				// left arrow
-				book = filteredBooks[i > 1 ? i - 1 : 0];
+				changeBook('previous');
 			}
 			else if (event.key === 'ArrowRight') {
-				// right arrow
-				book = filteredBooks[i < filteredBooks.length - 1 ? i + 1 : filteredBooks.length - 1];
+				changeBook('next');
 			}
-			
-			setCurrentBook({
-				id : book.id,
-				title : book.title,
-				author : book.author,
-				description : book.description,
-				imageUrl : book.imageurl,
-				date : book.date,
-				type : book.type,
-				genres : book.genres,
-				pageCount : book.pageCount
-			});
 		}
 		
-		document.addEventListener('keydown', changeBook);
+		document.addEventListener('keydown', detectClick);
 	
 		return function cleanup() {
-			document.removeEventListener('keydown', changeBook);
+			document.removeEventListener('keydown', detectClick);
 		}
 	}, [showBookModal, currentBook, filteredBooks]);
 
@@ -384,6 +418,9 @@ function Gallery(props) {
 				pageCount={currentBook.pageCount}
 				genres={currentBook.genres}
 				closeModal={closeBookModal}
+				onTouchStart={onTouchStart}
+				onTouchMove={onTouchMove}
+				onTouchEnd={onTouchEnd}
 			/>
 		</div>
 	);
