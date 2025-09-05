@@ -1,11 +1,9 @@
 import React from "react";
 import './App.css';
 
-import {Card, Collapse, Form, Table} from "react-bootstrap";
+import {Card, Col, Collapse, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTh, faList, faAnglesRight, faAnglesLeft, faSave} from "@fortawesome/free-solid-svg-icons"
-import Select from 'react-select'
-import { DatePicker } from 'rsuite';
+import {faAnglesRight, faAnglesLeft, faAnglesUp, faAnglesDown} from "@fortawesome/free-solid-svg-icons"
 import { useSearchParams } from "react-router-dom";
 import { useQueries } from "react-query";
 
@@ -17,7 +15,7 @@ import Book from "./components/Book";
 import BookModal from "./components/BookModal";
 import NewBookForm from "./components/NewBookForm";
 import BookListRow from "./components/BookListRow";
-import ViewButton from "./components/ViewButton";
+import FilterForm from "./components/FilterForm";
 
 function Gallery(props) {
 	const [books, setBooks] = React.useState(null);
@@ -162,23 +160,6 @@ function Gallery(props) {
 		filterBooks(searchTerm, filterDateFrom, filterDateTo, filterType, genres);
 	}
 
-	function downloadData() {
-		fetch(`${baseUrl}/download`)
-		.then((res) => res.blob())
-		.then((blob) => {
-			const url = window.URL.createObjectURL(new Blob([blob]));
-			const link = document.createElement("a");
-			link.href = url;
-			link.download = "books.xlsx";
-			document.body.appendChild(link);
-	
-			link.click();
-	
-			document.body.removeChild(link);
-			window.URL.revokeObjectURL(url);
-		});
-	}
-
 	React.useEffect(() => {
 		if (books !== null) {
 			filterBooks(searchTerm, filterDateFrom, filterDateTo, filterType, filterGenres);
@@ -291,57 +272,57 @@ function Gallery(props) {
 		<div className="App">
 			<NewBookForm id={!books ? 1 : books.length + 1} queryClient={props.queryClient}/>
 
+			{window.innerWidth < 600 &&
+				<div id="filterMobileContainer">
+				<Collapse in={openSidebar} dimension="height" id="filterMobile">
+					<div>
+						<Card body>
+							<FilterForm
+									view={view}
+									setView={setView}
+									sortBooks={sortBooks}
+									searchParams={searchParams}
+									searchTerm={searchTerm}
+									filterDateFrom={filterDateFrom}
+									filterDateTo={filterDateTo}
+									filterType={filterType}
+									filterGenres={filterGenres}
+									genres={genres}
+									defaultGenres={defaultGenres}
+									filterBooks={filterBooks}
+									filterBooksByGenres={filterBooksByGenres}
+								></FilterForm>
+						</Card>
+					</div>
+				</Collapse>
+				<button id="toggleFilters" onClick={() => setOpenSidebar(!openSidebar)} aria-label={openSidebar ? "Close filters" : "Open filters"}>
+					{openSidebar ? <FontAwesomeIcon icon={faAnglesUp}/> : <FontAwesomeIcon icon={faAnglesDown}/>}
+				</button>
+				</div>
+			}
+
 			<div className="flex-container">
+				{window.innerWidth >= 600 &&
+				<>
 				<div id="sidebarContainer" style={{ minHeight: '150px' }}>
 					<Collapse in={openSidebar} dimension="width" id="sidebar">
 						<div>
 							<Card body style={{ width: '300px' }}>
-								<div id="viewsContainer">
-									<div id="views">
-										<ViewButton 
-											id={0}
-											view={view}
-											setView={setView}
-											icon={faTh}
-										/>
-										<ViewButton 
-											id={1}
-											view={view}
-											setView={setView}
-											icon={faList}
-										/>
-									</div>
-								</div>
-								<Form.Label htmlFor="sort">Sort by:</Form.Label>
-								<Form.Select size="lg" className="form-input" id="sort" name="sort" defaultValue={2} onInput={(e)=>sortBooks(e.target.value)}>
-									<option value={1}>Date Read (Oldest to Newest)</option>
-									<option value={2}>Date Read (Newest to Oldest)</option>
-									<option value={3}>Author, First Name (A - Z)</option>
-									<option value={4}>Author, First Name (Z - A)</option>
-									<option value={5}>Author, Last Name (A - Z)</option>
-									<option value={6}>Author, Last Name (Z - A)</option>
-									<option value={7}>Title (A - Z)</option>
-									<option value={8}>Title (Z - A)</option>
-								</Form.Select>
-								<Form.Label htmlFor="searchBar">Search:</Form.Label>
-								<Form.Control
-									size="lg" type="text" placeholder="Search..."
-									className="form-input" id="searchBar"
-									onInput={(e)=>filterBooks(e.target.value.toLowerCase(), filterDateFrom, filterDateTo, filterType, filterGenres)}
-								/>
-								<Form.Label htmlFor="dateFrom">Date from:</Form.Label>
-								<DatePicker id="dateFrom" className="datepicker" size="lg" value={filterDateFrom} format="dd/MM/yyyy" onChange={(date)=>filterBooks(searchTerm, date, filterDateTo, filterType, filterGenres)} />
-								<Form.Label htmlFor="dateTo">Date to:</Form.Label>
-								<DatePicker id="dateTo" className="datepicker" size="lg" value={filterDateTo} format="dd/MM/yyyy" onChange={(date)=>filterBooks(searchTerm, filterDateFrom, date, filterType, filterGenres)} />
-								<Form.Label htmlFor="filterType">Type:</Form.Label>
-									<Form.Select size="lg" className="form-input" id="filterType" name="filterType" defaultValue={searchParams.get("type") === null ? 1 : searchParams.get("type") === "Fiction" ? 2 : 3} onChange={(e)=>filterBooks(searchTerm, filterDateFrom, filterDateTo, e.target.value, filterGenres)}>
-									<option value={1}>All</option>
-									<option value={2}>Fiction</option>
-									<option value={3}>Nonfiction</option>
-								</Form.Select>
-								<Form.Label htmlFor="filterGenre">Genre(s):</Form.Label>
-								<Select options={genres} value={defaultGenres} isMulti="true" menuPlacement="auto" minMenuHeight={300} className="form-input" id="filterGenre" name="filterGenre" onChange={(selectedOptions) => filterBooksByGenres(selectedOptions)} aria-label="Genre(s)"/>
-								<button id="exportBtn" className="form-control" onClick={downloadData}><FontAwesomeIcon icon={faSave}/> Export data as Excel</button>
+								<FilterForm
+									view={view}
+									setView={setView}
+									sortBooks={sortBooks}
+									searchParams={searchParams}
+									searchTerm={searchTerm}
+									filterDateFrom={filterDateFrom}
+									filterDateTo={filterDateTo}
+									filterType={filterType}
+									filterGenres={filterGenres}
+									genres={genres}
+									defaultGenres={defaultGenres}
+									filterBooks={filterBooks}
+									filterBooksByGenres={filterBooksByGenres}
+								></FilterForm>
 							</Card>
 						</div>
 					</Collapse>
@@ -350,6 +331,8 @@ function Gallery(props) {
 				<button id="toggleSidebar" onClick={() => setOpenSidebar(!openSidebar)} aria-label={openSidebar ? "Close sidebar" : "Open sidebar"}>
 					{openSidebar ? <FontAwesomeIcon icon={faAnglesLeft}/> : <FontAwesomeIcon icon={faAnglesRight}/>}
 				</button>
+				</>
+				}
 
 				{/* Gallery */}
 				{view === 0 ?

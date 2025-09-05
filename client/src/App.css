@@ -218,6 +218,17 @@ nav a:hover, nav a:focus {
     margin-right: 5px;
 }
 
+#toggleFilters {
+    border-radius: 0px 0px 10px 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.175);;
+    background-color: white;
+    font-size: smaller;
+    padding: 5px;
+    margin-right: 5px;
+}
+
 .statistics h1 {
 	margin-top: 25px;
 }
@@ -270,4 +281,8 @@ table a {
 .loader {
 	width: 30px;
 	margin-left: 15px;
+}
+
+#filterMobileContainer {
+	margin-top: 20px;
 }
