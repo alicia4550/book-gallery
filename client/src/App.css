@@ -286,3 +286,23 @@ table a {
 #filterMobileContainer {
 	margin-top: 20px;
 }
+
+@media screen and (max-width: 500px) {
+	.cover-img {
+		width: 120px;
+	}
+
+	#modal-img {
+		width: 90%;
+		height: auto;
+		vertical-align: middle;
+	}
+
+	#bookDetails {
+		padding: 5%;
+	}
+
+	.modal80 {
+		width: auto;
+	}
+}
