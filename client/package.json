@@ -4,6 +4,9 @@
   "private": true,
   "homepage": "/build",
   "dependencies": {
+    "@amcharts/amcharts5": "^5.13.6",
+    "@amcharts/amcharts5-fonts": "^5.0.1",
+    "@amcharts/amcharts5-geodata": "^5.1.5",
     "@babel/helpers": "^7.26.10",
     "@babel/runtime": "^7.26.10",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
@@ -55,5 +58,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@babel/plugin-transform-private-property-in-object": "^7.25.9"
-  }
+  },
+  "proxy": "http://localhost:3001"
 }

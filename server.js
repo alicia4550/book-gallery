@@ -86,10 +86,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(express.static("./client"));
-app.get("/", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-});
+// app.use(express.static("./client"));
+// app.get("/", (req, res) => {
+// 	res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+// });
 
 app.listen(PORT, (error) =>{
 	if(!error) {
@@ -240,4 +240,17 @@ app.get('/getSearchedBook', function(req, res) {
 	}).catch(e => {
 		console.log(e);
 	});
+});
+
+app.get('/getBooksSetInCanada', function(req, res) {
+	db.getBooksSetInCanada().then((result) => {
+		var books = [];
+		for (const book of result) {
+			let imageUrl = `https://bookgallerystorage.blob.core.windows.net/bookgallerycovers/${book.imageurl.replace(" ", "%20")}?${process.env.SAS_TOKEN}`;
+			let bookData = new Book(book.id, book.title, book.author.join(", "), book.description, imageUrl, book.date, book.type, book.genres, book.pagecount);
+			bookData = {...bookData, province: book.province};
+			books.push(bookData);
+		}
+		res.json({ message: books });
+	}).catch(console.dir);
 });

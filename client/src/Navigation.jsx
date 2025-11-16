@@ -8,6 +8,7 @@ function Navigation() {
 			<ul>
 				<li><NavLink exact="true" to='/'>Gallery</NavLink></li>
 				<li><NavLink exact="true" to='/statistics'>Statistics</NavLink></li>
+				<li><NavLink exact="true" to='/map'>Map</NavLink></li>
 			</ul>
 		</nav>
 	);

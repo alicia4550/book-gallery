@@ -45,8 +45,8 @@ function Gallery(props) {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const [touchStart, setTouchStart] = React.useState(null)
-	const [touchEnd, setTouchEnd] = React.useState(null)
+	const [touchStart, setTouchStart] = React.useState(null);
+	const [touchEnd, setTouchEnd] = React.useState(null);
 
 	function openModal(id) {
 		let book = books[id - 1];

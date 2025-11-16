@@ -150,6 +150,17 @@ async function countType(ytd) {
 	return types;
 }
 
+async function getBooksSetInCanada() {
+	const options = {
+		sort: { id: 1 }
+	};
+	const cursor = books.find({ province: { $exists: true } }, options);
+	if ((await books.countDocuments()) === 0) {
+		console.log("No documents found!");
+	}
+	return cursor.toArray();
+}
+
 // await client.close();
 
 module.exports = {
@@ -160,5 +171,6 @@ module.exports = {
 	countTotalPagesRead,
 	findTopAuthors,
 	findTopGenres,
-	countType
+	countType,
+	getBooksSetInCanada
 };
