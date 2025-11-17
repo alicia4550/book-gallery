@@ -25,6 +25,7 @@ function Gallery(props) {
 		id : 1,
 		title : "The Power of Habit: Why We Do What We Do in Life and Business",
 		author : "Charles Duhigg",
+		rating : 1,
 		description : "",
 		imageUrl : "1 The Power of Habit.jpg",
 		date : "2022-07-15",
@@ -54,6 +55,7 @@ function Gallery(props) {
 			id : id,
 			title : book.title,
 			author : book.author,
+			rating : book.rating,
 			description : book.description,
 			imageUrl : book.imageurl,
 			date : book.date,
@@ -197,6 +199,7 @@ function Gallery(props) {
 			id : book.id,
 			title : book.title,
 			author : book.author,
+			rating : book.rating,
 			description : book.description,
 			imageUrl : book.imageurl,
 			date : book.date,
@@ -230,6 +233,7 @@ function Gallery(props) {
 			id : book.id,
 			title : book.title,
 			author : book.author,
+			rating : book.rating,
 			description : book.description,
 			imageUrl : book.imageurl,
 			date : book.date,
@@ -413,6 +417,7 @@ function Gallery(props) {
 				id={currentBook.id}
 				title={currentBook.title}
 				author={currentBook.author}
+				rating={currentBook.rating}
 				description={currentBook.description}
 				imageUrl={currentBook.imageUrl}
 				pageCount={currentBook.pageCount}

@@ -22,10 +22,11 @@ const blobServiceClient = new BlobServiceClient(
 
 const containerClient = blobServiceClient.getContainerClient("bookgallerycovers");
 
-function Book(id, title, author, description, imageurl, date, type, genres, pageCount) {
+function Book(id, title, author, rating, description, imageurl, date, type, genres, pageCount) {
 	this.id = id;
 	this.title = title;
 	this.author = author;
+	this.rating = rating;
 	this.description = description;
 	this.imageurl = imageurl;
 	this.date = date;
@@ -106,7 +107,8 @@ app.post('/addBook', upload.single('cover'), function(req, res) {
 	let today = new Date();
 	const book = new Book(Number(req.body.id), 
 							req.body.title,
-							req.body.author.split(", "), 
+							req.body.author.split(", "),
+							parseInt(req.body.rating), 
 							req.body.description, 
 							setImageFileName(req), 
 							today, 
@@ -128,7 +130,7 @@ app.get('/getBooks', function(req, res) {
 		var books = [];
 		for (const book of result) {
 			let imageUrl = `https://bookgallerystorage.blob.core.windows.net/bookgallerycovers/${book.imageurl.replace(" ", "%20")}?${process.env.SAS_TOKEN}`;
-			books.push(new Book(book.id, book.title, book.author.join(", "), book.description, imageUrl, book.date, book.type, book.genres, book.pagecount));
+			books.push(new Book(book.id, book.title, book.author.join(", "), book.rating, book.description, imageUrl, book.date, book.type, book.genres, book.pagecount));
 		}
 		res.json({ message: books });
 	}).catch(console.dir);

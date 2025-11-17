@@ -26,6 +26,7 @@ async function writeNewBook(book) {
 		id : book.id,
 		title : book.title,
 		author : book.author,
+		rating : book.rating,
 		description : book.description,
 		imageurl : book.imageurl,
 		date : book.date,

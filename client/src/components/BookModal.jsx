@@ -10,7 +10,13 @@ export default function BookModal(props) {
 					<div className="col-md-7" id="bookDetails">
 						<b><h1 id="modal-title">{props.title}</h1></b>
 						<i><h2 id="modal-author">{props.author}</h2></i>
-						<br/>
+						<div id="modal-rating">
+							<span className={props.rating > 0 ? 'star-checked' : 'star-not-checked'}>★</span>
+							<span className={props.rating > 1 ? 'star-checked' : 'star-not-checked'}>★</span>
+							<span className={props.rating > 2 ? 'star-checked' : 'star-not-checked'}>★</span>
+							<span className={props.rating > 3 ? 'star-checked' : 'star-not-checked'}>★</span>
+							<span className={props.rating > 4 ? 'star-checked' : 'star-not-checked'}>★</span>
+						</div>
 						<i><h3 id="modal-pageCount">{props.pageCount} pages</h3></i>
 						<br/>
 						<div id="modal-description">
