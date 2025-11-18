@@ -156,15 +156,15 @@ app.get('/download', function(req, res) {
 			db.countTotalPagesRead(false),
 			db.findTopAuthors(false),
 			db.findTopGenres(false),
-			db.countType(false),
+			db.countType(false)
 		]).then((stats) => {
 			// Statistics Sheet
 			var statsData = [
 				["Statistic", "Value"],
 				["Total Books Read", stats[0]],
 				["Total Pages Read", stats[1]],
-				["Total Fiction Books Read", stats[4].find((obj) => obj.title === "Fiction").value],
-				["Total Nonfiction Books Read", stats[4].find((obj) => obj.title === "Nonfiction").value]
+				["Total Fiction Books Read", stats[4].find((obj) => obj.label === "Fiction").value],
+				["Total Nonfiction Books Read", stats[4].find((obj) => obj.label === "Nonfiction").value]
 			  ];
 			var ws_stats = XLSX.utils.aoa_to_sheet(statsData);
 			XLSX.utils.book_append_sheet(workbook, ws_stats, "Statistics");
@@ -202,7 +202,9 @@ app.get('/getStatistics', function(req, res) {
 		db.findTopGenres(false),
 		db.findTopGenres(true),
 		db.countType(false),
-		db.countType(true)
+		db.countType(true),
+		db.countRatings(false),
+		db.countRatings(true)
 	]).then((stats) => {
 		res.json({ 
 			totalBooksRead : stats[0],
@@ -214,7 +216,9 @@ app.get('/getStatistics', function(req, res) {
 			topGenres : stats[6],
 			topGenresYTD : stats[7],
 			typeCount : stats[8],
-			typeCountYTD : stats[9]
+			typeCountYTD : stats[9],
+			ratingsCount : stats[10],
+			ratingsCountYTD : stats[11]
 		});
 	});
 });

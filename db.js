@@ -141,14 +141,37 @@ async function countType(ytd) {
 
 	const types = agg.map((el) => {
 		return {
-			title: el._id,
-			value: el.count,
-			color: (el._id === "Fiction" ? '#E38627' : '#C13C37')
+			label: el._id,
+			value: el.count
 		}
 	});
-	types.sort((a,b) => b.title.localeCompare(a.title));
+	types.sort((a,b) => b.label.localeCompare(a.label));
 
 	return types;
+}
+
+async function countRatings(ytd) {
+	const firstDayOfYear = new Date(new Date().getFullYear(), 0 , 1);
+
+	var pipeline = ytd ? [{$match: {
+		date : {$gte: firstDayOfYear}
+	}}] : [];
+
+	pipeline.push(
+		{$group:{"_id":"$rating", "count":{$sum:1}}});
+
+	const agg = await books.aggregate(pipeline).toArray();
+
+	const ratings = agg.map((el) => {
+		return {
+			rating: el._id,
+			count: el.count
+		}
+	});
+
+	ratings.sort((firstItem, secondItem) => firstItem.rating - secondItem.rating);
+
+	return ratings;
 }
 
 // await client.close();
@@ -161,5 +184,6 @@ module.exports = {
 	countTotalPagesRead,
 	findTopAuthors,
 	findTopGenres,
-	countType
+	countType,
+	countRatings
 };

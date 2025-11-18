@@ -1,8 +1,8 @@
 import React from "react";
 import './App.css';
 import { Table } from "react-bootstrap";
-import { PieChart } from 'react-minimal-pie-chart';
 import { useQuery } from "react-query";
+import { BarChart, PieChart, pieArcLabelClasses } from "@mui/x-charts"
 
 import baseUrl from "./baseUrl";
 
@@ -26,6 +26,13 @@ function Statistics() {
 					<a href="/" className="stat-text">{data.totalBooksRead}</a>
 					<h1>Total Pages Read:</h1>
 					<a href="/" className="stat-text">{data.totalPagesRead}</a>
+					<h1>Ratings:</h1>
+					<BarChart 
+						dataset={data.ratingsCount}
+						xAxis={[{ dataKey: "rating", valueFormatter: (rating) => ('★'.repeat(rating)) }]}
+						series={[{ dataKey: "count", valueFormatter: (count) => (count + " books") }]}
+						height={300}
+					/>
 					<h1>Top Authors:</h1>
 					<Table>
 						<thead>
@@ -51,16 +58,36 @@ function Statistics() {
 					</Table>
 					<h1>Fiction vs Nonfiction:</h1>
 					{ data.typeCount.length === 0 ? <p className="stat-text">No data available</p> :
-					<PieChart style={{height: "25%", margin: "25px 0px"}}
-						data={data.typeCount}
-						label={({ dataEntry }) => dataEntry.title + ": " + Math.round(dataEntry.percentage) + '% (' + dataEntry.value + ")"}
-						labelStyle={(index) => ({
-							fill: "white",
-							fontSize: '5px',
-							fontFamily: 'sans-serif',
-						})}
-						labelPosition={60}
-						onClick={(e, i) => window.location.href = i === 1 ? "/?type=Fiction" : "/?type=Nonfiction"}
+					<PieChart
+						series={[
+							{
+								arcLabel: (item) => `${Math.round(item.value/data.totalBooksRead*100)}%`,
+								data: data.typeCount,
+								valueFormatter: (item) => (item.value + " books")
+							},
+						]}
+						sx={{
+							[`& .${pieArcLabelClasses.root}`]: {
+								fontWeight: 'bold',
+								fill: 'white',
+								fontSize: 'medium'
+							},
+						}}
+						slotProps={{
+							legend: {
+								sx: {
+									fontSize: 'medium',
+								},
+								direction: 'horizontal',
+								position: { 
+									vertical: 'bottom',
+									horizontal: 'center'
+								}
+							},
+						}}
+						width={250}
+						height={250}
+						onItemClick={(event, d) => window.location.href = (d.dataIndex === 1 ? "/?type=Fiction" : "/?type=Nonfiction")}
 					/>
 					}
 					<h1>Top Genres:</h1>
@@ -92,6 +119,13 @@ function Statistics() {
 					<a href="/?ytd=true" className="stat-text">{data.totalBooksReadYTD}</a>
 					<h1>Total Pages Read (YTD):</h1>
 					<a href="/?ytd=true" className="stat-text">{data.totalPagesReadYTD}</a>
+					<h1>Ratings (YTD):</h1>
+					<BarChart 
+						dataset={data.ratingsCountYTD}
+						xAxis={[{ dataKey: "rating", valueFormatter: (rating) => ('★'.repeat(rating)) }]}
+						series={[{ dataKey: "count", valueFormatter: (count) => (count + " books") }]}
+						height={300}
+					/>
 					<h1>Top Authors (YTD):</h1>
 					<Table>
 						<thead>
@@ -117,16 +151,36 @@ function Statistics() {
 					</Table>
 					<h1>Fiction vs Nonfiction (YTD):</h1>
 					{ data.typeCountYTD.length === 0 ? <p className="stat-text">No data available</p> :
-					<PieChart style={{height: "25%", margin: "25px 0px"}}
-						data={data.typeCountYTD}
-						label={({ dataEntry }) => dataEntry.title + ": " + Math.round(dataEntry.percentage) + '% (' + dataEntry.value + ")"}
-						labelStyle={(index) => ({
-							fill: "white",
-							fontSize: '5px',
-							fontFamily: 'sans-serif',
-						})}
-						labelPosition={60}
-						onClick={(e, i) => window.location.href = (i === 1 ? "/?type=Fiction" : "/?type=Nonfiction") + "&ytd=true"}
+					<PieChart
+						series={[
+							{
+								arcLabel: (item) => `${Math.round(item.value/data.totalBooksReadYTD*100)}%`,
+								data: data.typeCountYTD,
+								valueFormatter: (item) => (item.value + " books")
+							},
+						]}
+						sx={{
+							[`& .${pieArcLabelClasses.root}`]: {
+								fontWeight: 'bold',
+								fill: 'white',
+								fontSize: 'medium'
+							},
+						}}
+						slotProps={{
+							legend: {
+								sx: {
+									fontSize: 'medium',
+								},
+								direction: 'horizontal',
+								position: { 
+									vertical: 'bottom',
+									horizontal: 'center'
+								}
+							},
+						}}
+						width={250}
+						height={250}
+						onItemClick={(event, d) => window.location.href = (d.dataIndex === 1 ? "/?type=Fiction" : "/?type=Nonfiction") + "&ytd=true"}
 					/>
 					}
 					<h1>Top Genres (YTD):</h1>
